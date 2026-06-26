@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { CardSkeleton } from "@/components/skeleton";
 import { coverLetterFileName } from "@/lib/pdf/filename";
 import type {
   Contact,
@@ -127,6 +128,12 @@ export function CoverLetterPanel({
         >
           {loading ? "Writing…" : "Generate cover letter"}
         </button>
+        {loading ? (
+          <div className="space-y-3 pt-2">
+            <CardSkeleton lines={3} />
+            <CardSkeleton lines={3} />
+          </div>
+        ) : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
       </div>
     );

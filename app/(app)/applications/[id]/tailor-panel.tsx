@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { CardSkeleton } from "@/components/skeleton";
 import { scoreResume } from "@/lib/scoring";
 import type {
   JdExtraction,
@@ -159,6 +160,13 @@ export function TailorPanel({
         >
           {loading ? "Tailoring…" : "Tailor resume"}
         </button>
+        {loading ? (
+          <div className="space-y-3 pt-2">
+            <CardSkeleton lines={2} />
+            <CardSkeleton lines={2} />
+            <CardSkeleton lines={2} />
+          </div>
+        ) : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
       </div>
     );

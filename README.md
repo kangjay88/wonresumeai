@@ -96,9 +96,12 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   glance, recent activity, quick "new application" entry).
 - [ ] **Job application status** — richer status pipeline (board/kanban or
   improved pipeline view) beyond today's filter chips.
-- [ ] **Multi-step application flow** — turn the single application-detail page
-  into a guided stepper: **1) Extract JD + AI score → 2) Tailor resume →
-  3) Create cover letter**, with progress indication and per-step completion.
+- [x] **Multi-step application flow** — application page is a guided stepper
+  (Score & JD → Tailor resume → Cover letter) with a clickable progress header,
+  per-step completion checks, and Back/Next (`application-wizard.tsx`).
+- [x] **Loading & transitions** — route-level `loading.tsx` skeletons
+  (dashboard, application, resume builder), `Skeleton`/`CardSkeleton` primitives,
+  in-panel skeletons during AI generation, and a fade-in on step changes.
 
 **Scoring / quality (competitive gaps):**
 - [ ] Real spell-check (currently D10 is info-only) — close the table-stakes gap.

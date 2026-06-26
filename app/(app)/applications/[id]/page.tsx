@@ -10,36 +10,13 @@ import {
   resumeSectionsSchema,
 } from "@/lib/types";
 
-import { ApplicationScore } from "./application-score";
-import { CoverLetterPanel } from "./cover-letter-panel";
+import { ApplicationWizard } from "./application-wizard";
 import {
   CoverLetterVersionList,
   type CoverLetterVersionItem,
 } from "./cover-letter-version-list";
 import { StatusSelect } from "./status-select";
-import { TailorPanel } from "./tailor-panel";
 import { VersionList, type VersionItem } from "./version-list";
-
-function ChipGroup({ label, items }: { label: string; items: string[] }) {
-  if (!items.length) return null;
-  return (
-    <div className="space-y-1">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted">
-        {label}
-      </p>
-      <div className="flex flex-wrap gap-1.5">
-        {items.map((item, i) => (
-          <span
-            key={`${item}-${i}`}
-            className="rounded-full bg-white/10 px-2.5 py-1 text-sm"
-          >
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default async function ApplicationPage({
   params,
@@ -127,72 +104,26 @@ export default async function ApplicationPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Score */}
-        <div className="space-y-4">
-          {sections?.success ? (
-            <ApplicationScore
-              applicationId={app.id}
-              sections={sections.data}
-              jd={jdData}
-            />
-          ) : (
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">
-              No base resume found.{" "}
-              <Link href="/onboarding" className="underline">
-                Set up your resume
-              </Link>{" "}
-              to score against this job.
-            </div>
-          )}
-          {!jd?.success ? (
-            <p className="text-xs text-faint">
-              JD keyword extraction is unavailable for this application, so the
-              keyword category is excluded from the score.
-            </p>
-          ) : null}
-        </div>
-
-        {/* JD signals */}
-        <div className="space-y-5">
-          {jd?.success ? (
-            <div className="space-y-4 rounded-lg border border-line p-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
-                Extracted from the JD
-              </h2>
-              <ChipGroup label="Required skills" items={jd.data.required_skills} />
-              <ChipGroup label="Preferred skills" items={jd.data.preferred_skills} />
-              <ChipGroup label="Title variants" items={jd.data.title_variants} />
-              <ChipGroup label="Seniority signals" items={jd.data.seniority_signals} />
-              <ChipGroup label="Domain terms" items={jd.data.domain_terms} />
-            </div>
-          ) : null}
-
-          <details className="rounded-lg border border-line p-4">
-            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-ink">
-              Job description
-            </summary>
-            <p className="mt-3 whitespace-pre-wrap text-sm text-muted">
-              {app.job_description}
-            </p>
-          </details>
-        </div>
-      </div>
-
-      {/* Tailoring */}
+      {/* Multi-step flow */}
       {sections?.success ? (
-        <TailorPanel
+        <ApplicationWizard
           applicationId={app.id}
           baseResumeId={resume?.id ?? null}
           sections={sections.data}
           jd={jdData}
+          jobDescription={app.job_description}
+          resumeSaved={versions.length > 0}
+          coverLetterSaved={coverLetters.length > 0}
         />
-      ) : null}
-
-      {/* Cover letter */}
-      {sections?.success ? (
-        <CoverLetterPanel applicationId={app.id} contact={sections.data.contact} />
-      ) : null}
+      ) : (
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">
+          No base resume found.{" "}
+          <Link href="/onboarding" className="underline">
+            Set up your resume
+          </Link>{" "}
+          to score and tailor against this job.
+        </div>
+      )}
 
       {/* Saved versions */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
