@@ -183,6 +183,29 @@ export type TailorSummary = z.infer<typeof tailorSummarySchema>;
 export type TailorBullet = z.infer<typeof tailorBulletSchema>;
 export type TailorResult = z.infer<typeof tailorResultSchema>;
 
+// ---------------------------------------------------------------------------
+// Cover letters (api/ai/cover-letter + documents.content for cover_letter).
+// ---------------------------------------------------------------------------
+
+/** Model output: body paragraphs as suggestion cards. */
+export const coverLetterResultSchema = z.object({
+  paragraphs: z
+    .array(z.object({ suggested: lenientString, reasoning: lenientString }))
+    .default([]),
+});
+
+export type CoverLetterResult = z.infer<typeof coverLetterResultSchema>;
+
+/** Saved document content — self-contained so any version re-renders alone. */
+export const coverLetterContentSchema = z.object({
+  contact: contactSchema,
+  greeting: lenientString,
+  paragraphs: z.array(z.string()).default([]),
+  closing: lenientString,
+});
+
+export type CoverLetterContent = z.infer<typeof coverLetterContentSchema>;
+
 /** An empty resume — the starting point for a from-scratch builder. */
 export function emptyResumeSections(): ResumeSections {
   return resumeSectionsSchema.parse({ contact: {} });

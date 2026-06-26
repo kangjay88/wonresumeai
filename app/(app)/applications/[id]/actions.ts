@@ -5,7 +5,12 @@ import { revalidatePath } from "next/cache";
 import { getOptionalUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/supabase/types";
-import { resumeSectionsSchema, type ResumeSections } from "@/lib/types";
+import {
+  coverLetterContentSchema,
+  resumeSectionsSchema,
+  type CoverLetterContent,
+  type ResumeSections,
+} from "@/lib/types";
 
 export interface ScoreSnapshot {
   total: number;
@@ -77,6 +82,44 @@ export async function saveTailoredVersion(input: {
   if (editRows.length) {
     const { error: editError } = await supabase.from("suggestion_edits").insert(editRows);
     if (editError) console.error("saveTailoredVersion edits error:", editError);
+  }
+
+  revalidatePath(`/applications/${input.applicationId}`);
+  return { ok: true, version };
+}
+
+export async function saveCoverLetterVersion(input: {
+  applicationId: string;
+  content: CoverLetterContent;
+}): Promise<SaveVersionResult> {
+  const user = await getOptionalUser();
+  if (!user) return { ok: false, error: "Your session expired. Please sign in again." };
+
+  const content = coverLetterContentSchema.safeParse(input.content);
+  if (!content.success) return { ok: false, error: "The cover letter was invalid." };
+
+  const supabase = await createSupabaseServerClient();
+
+  const { data: latest } = await supabase
+    .from("documents")
+    .select("version")
+    .eq("application_id", input.applicationId)
+    .eq("doc_type", "cover_letter")
+    .order("version", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const version = (latest?.version ?? 0) + 1;
+
+  const { error } = await supabase.from("documents").insert({
+    user_id: user.id,
+    application_id: input.applicationId,
+    doc_type: "cover_letter",
+    version,
+    content: content.data as unknown as Json,
+  });
+  if (error) {
+    console.error("saveCoverLetterVersion error:", error);
+    return { ok: false, error: "Could not save the cover letter." };
   }
 
   revalidatePath(`/applications/${input.applicationId}`);

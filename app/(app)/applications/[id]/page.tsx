@@ -4,9 +4,18 @@ import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ApplicationStatus } from "@/lib/supabase/types";
-import { jdExtractionSchema, resumeSectionsSchema } from "@/lib/types";
+import {
+  coverLetterContentSchema,
+  jdExtractionSchema,
+  resumeSectionsSchema,
+} from "@/lib/types";
 
 import { ApplicationScore } from "./application-score";
+import { CoverLetterPanel } from "./cover-letter-panel";
+import {
+  CoverLetterVersionList,
+  type CoverLetterVersionItem,
+} from "./cover-letter-version-list";
 import { StatusSelect } from "./status-select";
 import { TailorPanel } from "./tailor-panel";
 import { VersionList, type VersionItem } from "./version-list";
@@ -57,10 +66,9 @@ export default async function ApplicationPage({
       .maybeSingle(),
     supabase
       .from("documents")
-      .select("id, version, content, score, created_at")
+      .select("id, version, content, score, created_at, doc_type")
       .eq("user_id", user.id)
       .eq("application_id", id)
-      .eq("doc_type", "resume")
       .order("version", { ascending: false }),
   ]);
 
@@ -73,6 +81,7 @@ export default async function ApplicationPage({
   const jdData = jd?.success ? jd.data : null;
 
   const versions: VersionItem[] = (docs ?? [])
+    .filter((d) => d.doc_type === "resume")
     .map((d) => {
       const parsed = resumeSectionsSchema.safeParse(d.content);
       if (!parsed.success) return null;
@@ -86,6 +95,20 @@ export default async function ApplicationPage({
       };
     })
     .filter((v): v is VersionItem => v !== null);
+
+  const coverLetters: CoverLetterVersionItem[] = (docs ?? [])
+    .filter((d) => d.doc_type === "cover_letter")
+    .map((d) => {
+      const parsed = coverLetterContentSchema.safeParse(d.content);
+      if (!parsed.success) return null;
+      return {
+        id: d.id,
+        version: d.version,
+        createdAt: d.created_at,
+        content: parsed.data,
+      };
+    })
+    .filter((v): v is CoverLetterVersionItem => v !== null);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -166,12 +189,25 @@ export default async function ApplicationPage({
         />
       ) : null}
 
+      {/* Cover letter */}
+      {sections?.success ? (
+        <CoverLetterPanel applicationId={app.id} contact={sections.data.contact} />
+      ) : null}
+
       {/* Saved versions */}
-      <div className="space-y-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
-          Saved versions
-        </h2>
-        <VersionList versions={versions} />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+            Resume versions
+          </h2>
+          <VersionList versions={versions} />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+            Cover letter versions
+          </h2>
+          <CoverLetterVersionList versions={coverLetters} />
+        </div>
       </div>
     </div>
   );

@@ -23,3 +23,15 @@ export function resumeFileName(name: string, companySuffix?: string): string {
 
   return `${base}_Resume${suffix}.pdf`;
 }
+
+/** "JayKang_CoverLetter.pdf" from the contact name. */
+export function coverLetterFileName(name: string): string {
+  const parts = name
+    .trim()
+    .split(/\s+/)
+    .map((p) => p.replace(/[^A-Za-z0-9]/g, ""))
+    .filter(Boolean);
+  const base =
+    parts.length >= 2 ? `${parts[0]}${parts[parts.length - 1]}` : parts[0] || "CoverLetter";
+  return `${base}_CoverLetter.pdf`;
+}

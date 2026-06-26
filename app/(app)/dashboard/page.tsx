@@ -2,17 +2,9 @@ import Link from "next/link";
 
 import { requireUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { ApplicationStatus } from "@/lib/supabase/types";
 import { careerProfileSchema } from "@/lib/types";
 
-const STATUS_TONE: Record<ApplicationStatus, string> = {
-  saved: "bg-gray-100 text-gray-600",
-  applied: "bg-blue-100 text-blue-700",
-  interviewing: "bg-amber-100 text-amber-700",
-  offer: "bg-green-100 text-green-700",
-  accepted: "bg-green-100 text-green-700",
-  rejected: "bg-red-100 text-red-600",
-};
+import { ApplicationsBoard, type AppRow } from "./applications-board";
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -91,35 +83,10 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Applications list */}
-          {applications && applications.length ? (
-            <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200">
-              {applications.map((a) => (
-                <li key={a.id}>
-                  <Link
-                    href={`/applications/${a.id}`}
-                    className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{a.role_title}</p>
-                      <p className="text-xs text-gray-500">{a.company}</p>
-                    </div>
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs capitalize ${
-                        STATUS_TONE[a.status as ApplicationStatus]
-                      }`}
-                    >
-                      {a.status}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
-              No applications yet. Paste a job description to get started.
-            </p>
-          )}
+          {/* Applications pipeline */}
+          <ApplicationsBoard
+            applications={(applications ?? []) as AppRow[]}
+          />
         </>
       )}
     </div>

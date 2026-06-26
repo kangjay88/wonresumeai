@@ -77,4 +77,8 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
   voice-preserving Sonnet tailoring (`api/ai/tailor`) with accept/edit/reject
   suggestion cards, live score, versioned `documents` saves + `suggestion_edits`
   capture, and per-version PDF re-export.
-- [ ] Phase 5 — Cover letters + dashboard
+- [x] **Phase 5 — Cover letters + dashboard**: voice-preserving Sonnet cover
+  letters (`api/ai/cover-letter`) from the latest tailored resume → paragraph
+  cards → cover-letter PDF + versioned saves; dashboard status pipeline with
+  per-status filtering; resume + cover-letter version history with re-export on
+  each application.
