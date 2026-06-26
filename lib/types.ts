@@ -150,6 +150,39 @@ export const reviewResultSchema = z.object({
 export type ReviewBullet = z.infer<typeof reviewBulletSchema>;
 export type ReviewResult = z.infer<typeof reviewResultSchema>;
 
+// ---------------------------------------------------------------------------
+// Tailoring (api/ai/tailor): the Sonnet suggestion set rendered as cards.
+// ---------------------------------------------------------------------------
+
+export const tailorSummarySchema = z.object({
+  original: lenientString,
+  suggested: lenientString,
+  reasoning: lenientString,
+});
+
+export const tailorBulletSchema = z.object({
+  role_index: z.coerce.number().int(),
+  bullet_index: z.coerce.number().int(),
+  original: lenientString,
+  suggested: lenientString,
+  reasoning: lenientString,
+  keywords_addressed: z.array(z.string()).default([]),
+  score_delta: z.coerce.number().default(0),
+  /** When a real metric is needed, the model asks rather than inventing one. */
+  needs_input: lenientString,
+});
+
+export const tailorResultSchema = z.object({
+  summary: tailorSummarySchema.nullish().transform((v) => v ?? null),
+  bullets: z.array(tailorBulletSchema).default([]),
+  skills_to_add: z.array(z.string()).default([]),
+  skills_to_remove: z.array(z.string()).default([]),
+});
+
+export type TailorSummary = z.infer<typeof tailorSummarySchema>;
+export type TailorBullet = z.infer<typeof tailorBulletSchema>;
+export type TailorResult = z.infer<typeof tailorResultSchema>;
+
 /** An empty resume — the starting point for a from-scratch builder. */
 export function emptyResumeSections(): ResumeSections {
   return resumeSectionsSchema.parse({ contact: {} });

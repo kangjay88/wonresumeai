@@ -71,5 +71,10 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
   functions returning subscores + concrete fixes; live score panel in the
   builder (no-JD: A/C/D); `npm run calibrate` ranks real > weakened and
   hand-tailored > real. C2/C3 LLM rubric deferred to Phase 4.
-- [ ] Phase 4 — Applications + tailoring
+- [x] **Phase 4 — Applications + tailoring**: new-application flow + Haiku JD
+  extraction; score-vs-JD (category B live); on-demand AI review (`api/ai/review`)
+  for C2/C3 rubric + semantic JD coverage; exact PDF page count feeding A7;
+  voice-preserving Sonnet tailoring (`api/ai/tailor`) with accept/edit/reject
+  suggestion cards, live score, versioned `documents` saves + `suggestion_edits`
+  capture, and per-version PDF re-export.
 - [ ] Phase 5 — Cover letters + dashboard

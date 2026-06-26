@@ -8,6 +8,8 @@ import { jdExtractionSchema, resumeSectionsSchema } from "@/lib/types";
 
 import { ApplicationScore } from "./application-score";
 import { StatusSelect } from "./status-select";
+import { TailorPanel } from "./tailor-panel";
+import { VersionList, type VersionItem } from "./version-list";
 
 function ChipGroup({ label, items }: { label: string; items: string[] }) {
   if (!items.length) return null;
@@ -39,7 +41,7 @@ export default async function ApplicationPage({
   const user = await requireUser();
   const supabase = await createSupabaseServerClient();
 
-  const [{ data: app }, { data: resume }] = await Promise.all([
+  const [{ data: app }, { data: resume }, { data: docs }] = await Promise.all([
     supabase
       .from("applications")
       .select("id, company, role_title, job_description, jd_extraction, status, applied_at")
@@ -53,6 +55,13 @@ export default async function ApplicationPage({
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    supabase
+      .from("documents")
+      .select("id, version, content, score, created_at")
+      .eq("user_id", user.id)
+      .eq("application_id", id)
+      .eq("doc_type", "resume")
+      .order("version", { ascending: false }),
   ]);
 
   if (!app) notFound();
@@ -62,6 +71,21 @@ export default async function ApplicationPage({
     : null;
   const sections = resume ? resumeSectionsSchema.safeParse(resume.sections) : null;
   const jdData = jd?.success ? jd.data : null;
+
+  const versions: VersionItem[] = (docs ?? [])
+    .map((d) => {
+      const parsed = resumeSectionsSchema.safeParse(d.content);
+      if (!parsed.success) return null;
+      const score = d.score as { total?: number } | null;
+      return {
+        id: d.id,
+        version: d.version,
+        total: typeof score?.total === "number" ? score.total : null,
+        createdAt: d.created_at,
+        sections: parsed.data,
+      };
+    })
+    .filter((v): v is VersionItem => v !== null);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -104,9 +128,6 @@ export default async function ApplicationPage({
               keyword category is excluded from the score.
             </p>
           ) : null}
-          <p className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-500">
-            Tailoring (AI suggestions to raise this score) lands in the next step.
-          </p>
         </div>
 
         {/* JD signals */}
@@ -133,6 +154,24 @@ export default async function ApplicationPage({
             </p>
           </details>
         </div>
+      </div>
+
+      {/* Tailoring */}
+      {sections?.success ? (
+        <TailorPanel
+          applicationId={app.id}
+          baseResumeId={resume?.id ?? null}
+          sections={sections.data}
+          jd={jdData}
+        />
+      ) : null}
+
+      {/* Saved versions */}
+      <div className="space-y-2">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+          Saved versions
+        </h2>
+        <VersionList versions={versions} />
       </div>
     </div>
   );
