@@ -96,7 +96,7 @@ function reverseChronological(sections: ResumeSections): CheckResult {
 }
 
 // A7 — length within budget ---------------------------------------------------
-function lengthBudget(sections: ResumeSections): CheckResult {
+function lengthBudget(sections: ResumeSections, measuredPages?: number): CheckResult {
   // Rough line estimate at ~14 words/line, ~46 content lines per page.
   let lines = 5; // header + contact
   if (sections.summary.trim())

@@ -119,6 +119,31 @@ export const jdExtractionSchema = z.object({
 
 export type JdExtraction = z.infer<typeof jdExtractionSchema>;
 
+// ---------------------------------------------------------------------------
+// AI review (api/ai/review): on-demand Sonnet pass that powers the C2/C3 LLM
+// rubric and semantic JD-coverage. Layered into the score via scoreResume opts.
+// ---------------------------------------------------------------------------
+
+export const reviewBulletSchema = z.object({
+  role_index: z.number().int(),
+  bullet_index: z.number().int(),
+  /** C2 — outcome vs duty, anchored 1–5. */
+  outcome_score: z.number().min(1).max(5),
+  outcome_note: z.string().default(""),
+  /** C3 — Accomplished X, measured by Y, by doing Z. */
+  xyz_complete: z.boolean().default(false),
+  missing_element: z.string().default(""),
+});
+
+export const reviewResultSchema = z.object({
+  bullets: z.array(reviewBulletSchema).default([]),
+  /** Required skills the resume demonstrates even if not literally matched. */
+  skills_present: z.array(z.string()).default([]),
+});
+
+export type ReviewBullet = z.infer<typeof reviewBulletSchema>;
+export type ReviewResult = z.infer<typeof reviewResultSchema>;
+
 /** An empty resume — the starting point for a from-scratch builder. */
 export function emptyResumeSections(): ResumeSections {
   return resumeSectionsSchema.parse({ contact: {} });
