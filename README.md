@@ -36,7 +36,7 @@ One-time manual steps (the app spends real API money — gate everything):
    - `ANTHROPIC_API_KEY` (server only)
 4. **Regenerate DB types** (optional but recommended once the project exists):
    ```bash
-   npx supabase gen types typescript --project-id <ref> > lib/supabase/types.ts
+   npx supabase gen types type    script --project-id <ref> > lib/supabase/types.ts
    ```
 
 ## Develop
@@ -61,7 +61,11 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
 - [x] **Phase 1 — Career memory**: PDF upload → unpdf text extraction → Haiku
   parse → editable confirmation UI → persist `career_memory` + seed
   `base_resumes` "Master resume" + harvest `voice_samples`.
-- [ ] Phase 2 — Resume builder + PDF export
+- [x] **Phase 2 — Resume builder + PDF export**: section editor
+  (`components/resume-editor.tsx`, shared with onboarding), live PDF preview via
+  `<PDFViewer>` and client-side download — both render the single
+  `lib/pdf/resume-document.tsx` template (no layout drift). PDF generated
+  client-side, not via a server route.
 - [ ] Phase 3 — Scoring engine
 - [ ] Phase 4 — Applications + tailoring
 - [ ] Phase 5 — Cover letters + dashboard

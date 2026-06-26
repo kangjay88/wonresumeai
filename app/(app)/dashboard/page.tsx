@@ -8,11 +8,20 @@ export default async function DashboardPage() {
   const user = await requireUser();
   const supabase = await createSupabaseServerClient();
 
-  const { data: memory } = await supabase
-    .from("career_memory")
-    .select("profile")
-    .eq("user_id", user.id)
-    .maybeSingle();
+  const [{ data: memory }, { data: resume }] = await Promise.all([
+    supabase
+      .from("career_memory")
+      .select("profile")
+      .eq("user_id", user.id)
+      .maybeSingle(),
+    supabase
+      .from("base_resumes")
+      .select("id, name")
+      .eq("user_id", user.id)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
   const profile = memory
     ? careerProfileSchema.safeParse(memory.profile)
@@ -37,7 +46,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-2 rounded-lg border border-gray-200 p-5">
+        <div className="space-y-3 rounded-lg border border-gray-200 p-5">
           <p className="text-sm text-gray-700">
             Career memory is set up
             {profile.data.roles[0]?.title
@@ -45,12 +54,24 @@ export default async function DashboardPage() {
               : ""}
             .
           </p>
-          <p className="text-sm text-gray-500">
-            Applications and tailoring land in Phase 4. For now you can{" "}
-            <Link href="/onboarding" className="underline">
-              review or re-upload your resume
+          <div className="flex flex-wrap gap-2">
+            {resume ? (
+              <Link
+                href={`/resume/${resume.id}`}
+                className="inline-block rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+              >
+                Open resume builder
+              </Link>
+            ) : null}
+            <Link
+              href="/onboarding"
+              className="inline-block rounded-md border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
+            >
+              Re-upload resume
             </Link>
-            .
+          </div>
+          <p className="text-sm text-gray-500">
+            Applications and tailoring land in Phase 4.
           </p>
         </div>
       )}
