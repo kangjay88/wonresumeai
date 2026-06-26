@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { describeAnthropicError, getAnthropic, MODELS } from "@/lib/ai/client";
 import { parseModelJson } from "@/lib/ai/json";
 import { REVIEW_SYSTEM_V1, buildReviewUserPrompt } from "@/lib/ai/prompts/review";
+import { blockCrossSite } from "@/lib/http";
 import { getOptionalUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
@@ -15,6 +16,9 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
+  const blocked = blockCrossSite(request);
+  if (blocked) return blocked;
+
   const user = await getOptionalUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

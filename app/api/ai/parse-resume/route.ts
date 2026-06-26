@@ -7,6 +7,7 @@ import {
   PARSE_RESUME_SYSTEM_V1,
   buildParseResumeUserPrompt,
 } from "@/lib/ai/prompts/parse-resume";
+import { blockCrossSite } from "@/lib/http";
 import { getOptionalUser } from "@/lib/supabase/auth";
 import { parsedResumeSchema } from "@/lib/types";
 
@@ -19,6 +20,9 @@ const MAX_FILE_BYTES = 6 * 1024 * 1024; // 6 MB
 const MAX_TEXT_CHARS = 30_000; // bound token usage on the Haiku call
 
 export async function POST(request: Request) {
+  const blocked = blockCrossSite(request);
+  if (blocked) return blocked;
+
   const user = await getOptionalUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

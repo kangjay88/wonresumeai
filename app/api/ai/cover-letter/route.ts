@@ -6,6 +6,7 @@ import {
   COVER_LETTER_SYSTEM_V1,
   buildCoverLetterUserPrompt,
 } from "@/lib/ai/prompts/cover-letter";
+import { blockCrossSite } from "@/lib/http";
 import { getOptionalUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
@@ -18,6 +19,9 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
+  const blocked = blockCrossSite(request);
+  if (blocked) return blocked;
+
   const user = await getOptionalUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
