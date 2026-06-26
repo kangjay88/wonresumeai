@@ -143,11 +143,11 @@ export function TailorPanel({
 
   if (!result) {
     return (
-      <div className="space-y-3 rounded-lg border border-gray-200 p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+      <div className="space-y-3 rounded-lg border border-line p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           Tailor to this job
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted">
           Generate voice-preserving suggestions that surface the job&apos;s
           keywords and strengthen weak bullets — never fabricating metrics.
         </p>
@@ -155,25 +155,25 @@ export function TailorPanel({
           type="button"
           onClick={runTailor}
           disabled={loading}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {loading ? "Tailoring…" : "Tailor resume"}
         </button>
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="text-sm text-red-400">{error}</p> : null}
       </div>
     );
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 p-4">
+    <div className="space-y-4 rounded-lg border border-line p-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           Suggestions
         </h2>
         <div className="text-right text-sm">
           <span className="font-semibold">{workingReport.total}</span>
-          <span className="text-gray-400">/100 </span>
-          <span className={delta > 0 ? "text-green-700" : "text-gray-400"}>
+          <span className="text-faint">/100 </span>
+          <span className={delta > 0 ? "text-green-400" : "text-faint"}>
             {delta > 0 ? `+${delta}` : delta}
           </span>
         </div>
@@ -228,8 +228,8 @@ export function TailorPanel({
 
       {/* Skills */}
       {result.skills_to_add.length || result.skills_to_remove.length ? (
-        <div className="space-y-2 rounded-md border border-gray-200 p-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <div className="space-y-2 rounded-md border border-line p-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted">
             Skills
           </p>
           <div className="flex flex-wrap gap-2">
@@ -260,12 +260,12 @@ export function TailorPanel({
       ) : null}
 
       {/* Save */}
-      <div className="flex items-center gap-3 border-t border-gray-200 pt-3">
+      <div className="flex items-center gap-3 border-t border-line pt-3">
         <button
           type="button"
           onClick={save}
           disabled={saving || acceptedCount === 0}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {saving ? "Saving…" : `Save version (${acceptedCount} accepted)`}
         </button>
@@ -273,11 +273,11 @@ export function TailorPanel({
           type="button"
           onClick={runTailor}
           disabled={loading}
-          className="text-sm text-gray-500 hover:text-gray-900"
+          className="text-sm text-muted hover:text-ink"
         >
           Re-tailor
         </button>
-        {saveMsg ? <span className="text-sm text-green-700">{saveMsg}</span> : null}
+        {saveMsg ? <span className="text-sm text-green-400">{saveMsg}</span> : null}
       </div>
     </div>
   );
@@ -311,8 +311,8 @@ function ActionRow({
   if (status === "accepted")
     return (
       <div className="flex items-center gap-2 text-xs">
-        <span className="font-medium text-green-700">Accepted</span>
-        <button onClick={onUndo} className="text-gray-400 hover:text-gray-700">
+        <span className="font-medium text-green-400">Accepted</span>
+        <button onClick={onUndo} className="text-faint hover:text-ink">
           Undo
         </button>
       </div>
@@ -320,8 +320,8 @@ function ActionRow({
   if (status === "rejected")
     return (
       <div className="flex items-center gap-2 text-xs">
-        <span className="text-gray-400">Rejected</span>
-        <button onClick={onUndo} className="text-gray-400 hover:text-gray-700">
+        <span className="text-faint">Rejected</span>
+        <button onClick={onUndo} className="text-faint hover:text-ink">
           Undo
         </button>
       </div>
@@ -330,19 +330,19 @@ function ActionRow({
     <div className="flex gap-2">
       <button
         onClick={onAccept}
-        className="rounded-md bg-gray-900 px-2.5 py-1 text-xs font-medium text-white"
+        className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
       >
         Accept
       </button>
       <button
         onClick={onEdit}
-        className="rounded-md border border-gray-300 px-2.5 py-1 text-xs"
+        className="rounded-md border border-line px-2.5 py-1 text-xs"
       >
         Edit
       </button>
       <button
         onClick={onReject}
-        className="rounded-md border border-gray-300 px-2.5 py-1 text-xs text-gray-500"
+        className="rounded-md border border-line px-2.5 py-1 text-xs text-muted"
       >
         Reject
       </button>
@@ -367,16 +367,16 @@ function EditArea({
         value={value}
         rows={3}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
       <div className="flex gap-2">
         <button
           onClick={onSave}
-          className="rounded-md bg-gray-900 px-2.5 py-1 text-xs font-medium text-white"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
         >
           Accept edited
         </button>
-        <button onClick={onCancel} className="rounded-md border border-gray-300 px-2.5 py-1 text-xs">
+        <button onClick={onCancel} className="rounded-md border border-line px-2.5 py-1 text-xs">
           Cancel
         </button>
       </div>
@@ -398,9 +398,9 @@ function SuggestionCard({
 } & CardActions) {
   const dim = actions.status === "rejected";
   return (
-    <div className={`space-y-2 rounded-md border border-gray-200 p-3 ${dim ? "opacity-50" : ""}`}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</p>
-      {original ? <p className="text-sm text-gray-400 line-through">{original}</p> : null}
+    <div className={`space-y-2 rounded-md border border-line p-3 ${dim ? "opacity-50" : ""}`}>
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted">{title}</p>
+      {original ? <p className="text-sm text-faint line-through">{original}</p> : null}
       {actions.editing ? (
         <EditArea
           value={suggested}
@@ -411,7 +411,7 @@ function SuggestionCard({
       ) : (
         <p className="text-sm">{suggested}</p>
       )}
-      {reasoning ? <p className="text-xs text-gray-500">{reasoning}</p> : null}
+      {reasoning ? <p className="text-xs text-muted">{reasoning}</p> : null}
       <ActionRow {...actions} />
     </div>
   );
@@ -429,15 +429,15 @@ function BulletCard({
 } & CardActions) {
   const dim = actions.status === "rejected";
   return (
-    <div className={`space-y-2 rounded-md border border-gray-200 p-3 ${dim ? "opacity-50" : ""}`}>
+    <div className={`space-y-2 rounded-md border border-line p-3 ${dim ? "opacity-50" : ""}`}>
       <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{roleLabel}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted">{roleLabel}</p>
         {bullet.score_delta > 0 ? (
-          <span className="text-xs text-green-700">+{bullet.score_delta}</span>
+          <span className="text-xs text-green-400">+{bullet.score_delta}</span>
         ) : null}
       </div>
       {bullet.original ? (
-        <p className="text-sm text-gray-400 line-through">{bullet.original}</p>
+        <p className="text-sm text-faint line-through">{bullet.original}</p>
       ) : null}
       {actions.editing ? (
         <EditArea
@@ -450,20 +450,20 @@ function BulletCard({
         <p className="text-sm">{suggested}</p>
       )}
       {bullet.needs_input ? (
-        <p className="rounded bg-amber-50 px-2 py-1 text-xs text-amber-800">
+        <p className="rounded bg-amber-500/10 px-2 py-1 text-xs text-amber-300">
           Needs your input: {bullet.needs_input} (use Edit to add the real number)
         </p>
       ) : null}
       {bullet.keywords_addressed.length ? (
         <div className="flex flex-wrap gap-1">
           {bullet.keywords_addressed.map((k, i) => (
-            <span key={i} className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+            <span key={i} className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted">
               {k}
             </span>
           ))}
         </div>
       ) : null}
-      {bullet.reasoning ? <p className="text-xs text-gray-500">{bullet.reasoning}</p> : null}
+      {bullet.reasoning ? <p className="text-xs text-muted">{bullet.reasoning}</p> : null}
       <ActionRow {...actions} />
     </div>
   );
@@ -488,10 +488,10 @@ function SkillChip({
     <span
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-sm ${
         accepted
-          ? "border-green-300 bg-green-50 text-green-800"
+          ? "border-green-300 bg-green-50 text-green-300"
           : rejected
-            ? "border-gray-200 text-gray-300 line-through"
-            : "border-gray-300"
+            ? "border-line text-faint line-through"
+            : "border-line"
       }`}
     >
       {label}
@@ -500,12 +500,12 @@ function SkillChip({
           <button onClick={onAccept} className="text-green-600" aria-label="Accept">
             ✓
           </button>
-          <button onClick={onReject} className="text-gray-400" aria-label="Reject">
+          <button onClick={onReject} className="text-faint" aria-label="Reject">
             ×
           </button>
         </>
       ) : (
-        <button onClick={onReset} className="text-gray-400">
+        <button onClick={onReset} className="text-faint">
           undo
         </button>
       )}

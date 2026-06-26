@@ -15,7 +15,7 @@ import { ScorePanel } from "./score-panel";
 const PdfPreview = dynamic(() => import("./pdf-preview"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center text-sm text-gray-400">
+    <div className="flex h-full items-center justify-center text-sm text-faint">
       Loading preview…
     </div>
   ),
@@ -126,12 +126,12 @@ export function ResumeBuilder({
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col">
+    <div className="flex h-screen flex-col p-6">
       {/* Toolbar */}
-      <div className="flex items-center justify-between border-b border-gray-200 px-2 pb-3">
+      <div className="flex items-center justify-between border-b border-line px-2 pb-3">
         <div>
           <h1 className="text-base font-semibold">{name}</h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted">
             {dirty ? "Unsaved changes" : status ?? "All changes saved"}
           </p>
         </div>
@@ -139,7 +139,7 @@ export function ResumeBuilder({
           <button
             type="button"
             onClick={handleDownload}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5"
           >
             Download PDF
           </button>
@@ -147,7 +147,7 @@ export function ResumeBuilder({
             type="button"
             onClick={handleSave}
             disabled={saving || !dirty}
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+            className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
           >
             {saving ? "Saving…" : "Save"}
           </button>
@@ -160,7 +160,7 @@ export function ResumeBuilder({
           <ScorePanel report={report} />
           <ResumeSectionsEditor sections={sections} onChange={setSections} />
         </div>
-        <div className="hidden h-full overflow-hidden rounded-md border border-gray-200 bg-gray-100 lg:block">
+        <div className="hidden h-full overflow-hidden rounded-md border border-line bg-white/10 lg:block">
           <PdfPreview sections={previewSections} />
         </div>
       </div>

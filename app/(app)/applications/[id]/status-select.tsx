@@ -32,7 +32,7 @@ export function StatusSelect({
           if (!result.ok) setStatus(initial);
         });
       }}
-      className="rounded-md border border-gray-300 px-2 py-1 text-sm capitalize outline-none focus:border-gray-900 disabled:opacity-50"
+      className="rounded-md border border-line px-2 py-1 text-sm capitalize outline-none focus:border-brand-500 disabled:opacity-50"
     >
       {STATUSES.map((s) => (
         <option key={s} value={s} className="capitalize">

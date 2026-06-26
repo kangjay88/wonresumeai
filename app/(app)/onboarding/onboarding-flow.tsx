@@ -73,11 +73,11 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
 
   return (
     <div className="space-y-4">
-      <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 px-6 py-10 text-center hover:border-gray-400">
+      <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-line px-6 py-10 text-center hover:border-muted">
         <span className="text-sm font-medium">
           {file ? file.name : "Choose a PDF resume"}
         </span>
-        <span className="text-xs text-gray-500">PDF, up to 6 MB</span>
+        <span className="text-xs text-muted">PDF, up to 6 MB</span>
         <input
           type="file"
           accept="application/pdf"
@@ -90,7 +90,7 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
       </label>
 
       {error ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-400" role="alert">
           {error}
         </p>
       ) : null}
@@ -99,7 +99,7 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
         type="button"
         onClick={handleParse}
         disabled={!file || loading}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
       >
         {loading ? "Reading resume…" : "Parse resume"}
       </button>
@@ -147,7 +147,7 @@ function ConfirmStep({
 
   return (
     <div className="space-y-8">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-muted">
         Here&apos;s your career memory, assembled. Fix anything the parser got
         wrong, then save.
       </p>
@@ -166,17 +166,17 @@ function ConfirmStep({
       <ResumeSectionsEditor sections={draft.sections} onChange={setSections} />
 
       {error ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-400" role="alert">
           {error}
         </p>
       ) : null}
 
-      <div className="flex items-center gap-3 border-t border-gray-200 pt-4">
+      <div className="flex items-center gap-3 border-t border-line pt-4">
         <button
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save career memory"}
         </button>
@@ -184,7 +184,7 @@ function ConfirmStep({
           type="button"
           onClick={onBack}
           disabled={saving}
-          className="text-sm text-gray-500 hover:text-gray-900"
+          className="text-sm text-muted hover:text-ink"
         >
           Upload a different file
         </button>

@@ -24,14 +24,14 @@ function ChipGroup({ label, items }: { label: string; items: string[] }) {
   if (!items.length) return null;
   return (
     <div className="space-y-1">
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted">
         {label}
       </p>
       <div className="flex flex-wrap gap-1.5">
         {items.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="rounded-full bg-gray-100 px-2.5 py-1 text-sm"
+            className="rounded-full bg-white/10 px-2.5 py-1 text-sm"
           >
             {item}
           </span>
@@ -111,18 +111,18 @@ export default async function ApplicationPage({
     .filter((v): v is CoverLetterVersionItem => v !== null);
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6 p-6 lg:p-8">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link href="/dashboard" className="text-xs text-gray-400 hover:text-gray-600">
+          <Link href="/dashboard" className="text-xs text-faint hover:text-ink">
             ← Applications
           </Link>
           <h1 className="text-xl font-semibold">{app.role_title}</h1>
-          <p className="text-sm text-gray-500">{app.company}</p>
+          <p className="text-sm text-muted">{app.company}</p>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-400">Status</span>
+          <span className="text-faint">Status</span>
           <StatusSelect id={app.id} initial={app.status as ApplicationStatus} />
         </div>
       </div>
@@ -137,7 +137,7 @@ export default async function ApplicationPage({
               jd={jdData}
             />
           ) : (
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">
               No base resume found.{" "}
               <Link href="/onboarding" className="underline">
                 Set up your resume
@@ -146,7 +146,7 @@ export default async function ApplicationPage({
             </div>
           )}
           {!jd?.success ? (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-faint">
               JD keyword extraction is unavailable for this application, so the
               keyword category is excluded from the score.
             </p>
@@ -156,8 +156,8 @@ export default async function ApplicationPage({
         {/* JD signals */}
         <div className="space-y-5">
           {jd?.success ? (
-            <div className="space-y-4 rounded-lg border border-gray-200 p-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+            <div className="space-y-4 rounded-lg border border-line p-4">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
                 Extracted from the JD
               </h2>
               <ChipGroup label="Required skills" items={jd.data.required_skills} />
@@ -168,11 +168,11 @@ export default async function ApplicationPage({
             </div>
           ) : null}
 
-          <details className="rounded-lg border border-gray-200 p-4">
-            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-gray-700">
+          <details className="rounded-lg border border-line p-4">
+            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-ink">
               Job description
             </summary>
-            <p className="mt-3 whitespace-pre-wrap text-sm text-gray-600">
+            <p className="mt-3 whitespace-pre-wrap text-sm text-muted">
               {app.job_description}
             </p>
           </details>
@@ -197,13 +197,13 @@ export default async function ApplicationPage({
       {/* Saved versions */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
             Resume versions
           </h2>
           <VersionList versions={versions} />
         </div>
         <div className="space-y-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
             Cover letter versions
           </h2>
           <CoverLetterVersionList versions={coverLetters} />

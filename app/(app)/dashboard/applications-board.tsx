@@ -17,12 +17,12 @@ const PIPELINE: ApplicationStatus[] = [
 ];
 
 const STATUS_TONE: Record<ApplicationStatus, string> = {
-  saved: "bg-gray-100 text-gray-600",
-  applied: "bg-blue-100 text-blue-700",
-  interviewing: "bg-amber-100 text-amber-700",
-  offer: "bg-green-100 text-green-700",
-  accepted: "bg-green-100 text-green-700",
-  rejected: "bg-red-100 text-red-600",
+  saved: "bg-white/10 text-muted",
+  applied: "bg-blue-500/15 text-blue-300",
+  interviewing: "bg-amber-500/15 text-amber-300",
+  offer: "bg-green-500/15 text-green-400",
+  accepted: "bg-green-500/15 text-green-400",
+  rejected: "bg-red-500/15 text-red-400",
 };
 
 type Filter = ApplicationStatus | "all";
@@ -60,16 +60,16 @@ export function ApplicationsBoard({ applications }: { applications: AppRow[] }) 
       </div>
 
       {visible.length ? (
-        <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200">
+        <ul className="divide-y divide-line rounded-lg border border-line">
           {visible.map((a) => (
             <li key={a.id}>
               <Link
                 href={`/applications/${a.id}`}
-                className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+                className="flex items-center justify-between px-4 py-3 hover:bg-white/5"
               >
                 <div>
                   <p className="text-sm font-medium">{a.role_title}</p>
-                  <p className="text-xs text-gray-500">{a.company}</p>
+                  <p className="text-xs text-muted">{a.company}</p>
                 </div>
                 <span
                   className={`rounded-full px-2.5 py-1 text-xs capitalize ${STATUS_TONE[a.status]}`}
@@ -81,7 +81,7 @@ export function ApplicationsBoard({ applications }: { applications: AppRow[] }) 
           ))}
         </ul>
       ) : (
-        <p className="rounded-lg border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-line p-6 text-center text-sm text-muted">
           {filter === "all"
             ? "No applications yet. Paste a job description to get started."
             : `No applications in "${filter}".`}
@@ -108,12 +108,12 @@ function FilterChip({
       onClick={onClick}
       className={`rounded-full border px-3 py-1 text-xs capitalize transition-colors ${
         active
-          ? "border-gray-900 bg-gray-900 text-white"
-          : "border-gray-300 text-gray-600 hover:bg-gray-50"
+          ? "border-brand-600 bg-brand-600 text-white"
+          : "border-line text-muted hover:bg-white/5"
       }`}
     >
       {label}
-      <span className={active ? "ml-1 text-gray-300" : "ml-1 text-gray-400"}>{count}</span>
+      <span className={active ? "ml-1 text-white/70" : "ml-1 text-faint"}>{count}</span>
     </button>
   );
 }

@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { Sidebar } from "@/components/sidebar";
 import { requireUser } from "@/lib/supabase/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/(auth)/login/actions";
 
 export default async function AppLayout({
@@ -9,31 +11,34 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser();
+  const supabase = await createSupabaseServerClient();
+  const { data: resume } = await supabase
+    .from("base_resumes")
+    .select("id")
+    .eq("user_id", user.id)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   return (
-    <div className="flex flex-1 flex-col">
-      <header className="flex items-center justify-between border-b border-gray-200 px-6 py-3">
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="font-semibold">
+    <div className="flex min-h-screen bg-surface">
+      <Sidebar email={user.email ?? ""} resumeId={resume?.id ?? null} />
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Mobile top bar (sidebar is hidden below md) */}
+        <header className="flex items-center justify-between border-b border-line bg-card px-4 py-3 md:hidden">
+          <Link href="/dashboard" className="font-semibold text-brand-300">
             Resume Tailor
           </Link>
-          <Link href="/dashboard" className="text-gray-500 hover:text-gray-900">
-            Applications
-          </Link>
-        </nav>
-        <div className="flex items-center gap-3 text-sm">
-          <span className="text-gray-500">{user.email}</span>
           <form action={signOut}>
-            <button
-              type="submit"
-              className="rounded-md border border-gray-300 px-2 py-1 text-gray-700 hover:bg-gray-50"
-            >
+            <button type="submit" className="text-sm text-muted">
               Sign out
             </button>
           </form>
-        </div>
-      </header>
-      <main className="flex-1 p-6">{children}</main>
+        </header>
+
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   );
 }

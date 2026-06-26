@@ -184,7 +184,7 @@ function ExperienceCard({
   ) => onChange({ ...role, [key]: value });
 
   return (
-    <div className="space-y-3 rounded-md border border-gray-200 p-4">
+    <div className="space-y-3 rounded-md border border-line p-4">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="Title" value={role.title} onChange={(v) => set("title", v)} />
         <Field
@@ -231,7 +231,7 @@ function EducationCard({
   ) => onChange({ ...edu, [key]: value });
 
   return (
-    <div className="space-y-3 rounded-md border border-gray-200 p-4">
+    <div className="space-y-3 rounded-md border border-line p-4">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="School" value={edu.school} onChange={(v) => set("school", v)} />
         <Field label="Degree" value={edu.degree} onChange={(v) => set("degree", v)} />
@@ -268,7 +268,7 @@ function ProjectCard({
     onChange({ ...project, [key]: value });
 
   return (
-    <div className="space-y-3 rounded-md border border-gray-200 p-4">
+    <div className="space-y-3 rounded-md border border-line p-4">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="Name" value={project.name} onChange={(v) => set("name", v)} />
         <Field label="Link" value={project.link} onChange={(v) => set("link", v)} />
@@ -294,7 +294,7 @@ function BulletsEditor({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-xs font-medium text-gray-600">
+      <label className="text-xs font-medium text-muted">
         Bullets (one per line)
       </label>
       <textarea
@@ -313,7 +313,7 @@ function BulletsEditor({
               .filter(Boolean)
           )
         }
-        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </div>
   );
@@ -335,10 +335,10 @@ export function Section({
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           {title}
         </h2>
-        {hint ? <p className="text-xs text-gray-500">{hint}</p> : null}
+        {hint ? <p className="text-xs text-muted">{hint}</p> : null}
       </div>
       {children}
     </section>
@@ -356,12 +356,12 @@ export function Field({
 }) {
   return (
     <label className="block space-y-1">
-      <span className="text-xs font-medium text-gray-600">{label}</span>
+      <span className="text-xs font-medium text-muted">{label}</span>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </label>
   );
@@ -381,7 +381,7 @@ export function TextArea({
       value={value}
       rows={rows}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+      className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
     />
   );
 }
@@ -413,14 +413,14 @@ export function ChipList({
         {items.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-sm"
+            className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-sm"
           >
             {item}
             <button
               type="button"
               aria-label={`Remove ${item}`}
               onClick={() => onChange(items.filter((_, idx) => idx !== i))}
-              className="text-gray-400 hover:text-gray-700"
+              className="text-faint hover:text-ink"
             >
               ×
             </button>
@@ -439,7 +439,7 @@ export function ChipList({
           }
         }}
         onBlur={add}
-        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </div>
   );
@@ -456,7 +456,7 @@ export function AddButton({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-md border border-dashed border-gray-300 px-3 py-2 text-sm text-gray-600 hover:border-gray-400 hover:text-gray-900"
+      className="rounded-md border border-dashed border-line px-3 py-2 text-sm text-muted hover:border-line hover:text-ink"
     >
       + {label}
     </button>
@@ -474,7 +474,7 @@ export function RemoveButton({
     <button
       type="button"
       onClick={onClick}
-      className="text-xs text-red-500 hover:text-red-700"
+      className="text-xs text-red-500 hover:text-red-300"
     >
       {label}
     </button>

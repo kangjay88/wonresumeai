@@ -18,7 +18,7 @@ export function NewApplicationForm() {
           <input
             name="company"
             required
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+            className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
           />
         </label>
         <label className="space-y-1">
@@ -26,7 +26,7 @@ export function NewApplicationForm() {
           <input
             name="role_title"
             required
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+            className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
           />
         </label>
       </div>
@@ -38,12 +38,12 @@ export function NewApplicationForm() {
           required
           rows={14}
           placeholder="Paste the full job description here…"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+          className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
         />
       </label>
 
       {state && !state.ok ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-400" role="alert">
           {state.error}
         </p>
       ) : null}
@@ -51,7 +51,7 @@ export function NewApplicationForm() {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
       >
         {pending ? "Extracting & scoring…" : "Create application"}
       </button>

@@ -111,11 +111,11 @@ export function CoverLetterPanel({
 
   if (!result) {
     return (
-      <div className="space-y-3 rounded-lg border border-gray-200 p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+      <div className="space-y-3 rounded-lg border border-line p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           Cover letter
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted">
           Generate a cover letter in your voice from your tailored resume and
           this job — resume-backed, no fabricated claims.
         </p>
@@ -123,32 +123,32 @@ export function CoverLetterPanel({
           type="button"
           onClick={generate}
           disabled={loading}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {loading ? "Writing…" : "Generate cover letter"}
         </button>
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="text-sm text-red-400">{error}</p> : null}
       </div>
     );
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 p-4">
+    <div className="space-y-4 rounded-lg border border-line p-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           Cover letter
         </h2>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-faint">
           {acceptedParagraphs.length} paragraph(s) accepted
         </span>
       </div>
 
       <label className="block space-y-1">
-        <span className="text-xs font-medium text-gray-600">Greeting</span>
+        <span className="text-xs font-medium text-muted">Greeting</span>
         <input
           value={greeting}
           onChange={(e) => setGreeting(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+          className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
         />
       </label>
 
@@ -158,19 +158,19 @@ export function CoverLetterPanel({
         return (
           <div
             key={i}
-            className={`space-y-2 rounded-md border border-gray-200 p-3 ${st === "rejected" ? "opacity-50" : ""}`}
+            className={`space-y-2 rounded-md border border-line p-3 ${st === "rejected" ? "opacity-50" : ""}`}
           >
             {isEditing ? (
               <textarea
                 value={textOf(i, p.suggested)}
                 rows={4}
                 onChange={(e) => setEdited((prev) => ({ ...prev, [i]: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+                className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
               />
             ) : (
               <p className="text-sm">{textOf(i, p.suggested)}</p>
             )}
-            {p.reasoning ? <p className="text-xs text-gray-500">{p.reasoning}</p> : null}
+            {p.reasoning ? <p className="text-xs text-muted">{p.reasoning}</p> : null}
 
             {isEditing ? (
               <div className="flex gap-2">
@@ -179,33 +179,33 @@ export function CoverLetterPanel({
                     setStatus((s) => ({ ...s, [i]: "accepted" }));
                     setEditing(null);
                   }}
-                  className="rounded-md bg-gray-900 px-2.5 py-1 text-xs font-medium text-white"
+                  className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
                 >
                   Accept edited
                 </button>
                 <button
                   onClick={() => setEditing(null)}
-                  className="rounded-md border border-gray-300 px-2.5 py-1 text-xs"
+                  className="rounded-md border border-line px-2.5 py-1 text-xs"
                 >
                   Cancel
                 </button>
               </div>
             ) : st === "accepted" ? (
               <div className="flex items-center gap-2 text-xs">
-                <span className="font-medium text-green-700">Accepted</span>
+                <span className="font-medium text-green-400">Accepted</span>
                 <button
                   onClick={() => setStatus((s) => ({ ...s, [i]: "pending" }))}
-                  className="text-gray-400 hover:text-gray-700"
+                  className="text-faint hover:text-ink"
                 >
                   Undo
                 </button>
               </div>
             ) : st === "rejected" ? (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-gray-400">Rejected</span>
+                <span className="text-faint">Rejected</span>
                 <button
                   onClick={() => setStatus((s) => ({ ...s, [i]: "pending" }))}
-                  className="text-gray-400 hover:text-gray-700"
+                  className="text-faint hover:text-ink"
                 >
                   Undo
                 </button>
@@ -214,19 +214,19 @@ export function CoverLetterPanel({
               <div className="flex gap-2">
                 <button
                   onClick={() => setStatus((s) => ({ ...s, [i]: "accepted" }))}
-                  className="rounded-md bg-gray-900 px-2.5 py-1 text-xs font-medium text-white"
+                  className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
                 >
                   Accept
                 </button>
                 <button
                   onClick={() => setEditing(i)}
-                  className="rounded-md border border-gray-300 px-2.5 py-1 text-xs"
+                  className="rounded-md border border-line px-2.5 py-1 text-xs"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => setStatus((s) => ({ ...s, [i]: "rejected" }))}
-                  className="rounded-md border border-gray-300 px-2.5 py-1 text-xs text-gray-500"
+                  className="rounded-md border border-line px-2.5 py-1 text-xs text-muted"
                 >
                   Reject
                 </button>
@@ -236,12 +236,12 @@ export function CoverLetterPanel({
         );
       })}
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-gray-200 pt-3">
+      <div className="flex flex-wrap items-center gap-3 border-t border-line pt-3">
         <button
           type="button"
           onClick={save}
           disabled={saving || acceptedParagraphs.length === 0}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save cover letter"}
         </button>
@@ -249,7 +249,7 @@ export function CoverLetterPanel({
           type="button"
           onClick={download}
           disabled={acceptedParagraphs.length === 0}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+          className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5 disabled:opacity-50"
         >
           Download PDF
         </button>
@@ -257,11 +257,11 @@ export function CoverLetterPanel({
           type="button"
           onClick={generate}
           disabled={loading}
-          className="text-sm text-gray-500 hover:text-gray-900"
+          className="text-sm text-muted hover:text-ink"
         >
           Regenerate
         </button>
-        {saveMsg ? <span className="text-sm text-green-700">{saveMsg}</span> : null}
+        {saveMsg ? <span className="text-sm text-green-400">{saveMsg}</span> : null}
       </div>
     </div>
   );

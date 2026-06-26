@@ -30,26 +30,26 @@ export function VersionList({ versions }: { versions: VersionItem[] }) {
 
   if (!versions.length) {
     return (
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-faint">
         No saved versions yet. Tailor and save to create version 1.
       </p>
     );
   }
 
   return (
-    <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200">
+    <ul className="divide-y divide-line rounded-lg border border-line">
       {versions.map((v) => (
         <li key={v.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
           <div>
             <span className="font-medium">Version {v.version}</span>
             {v.total !== null ? (
-              <span className="ml-2 text-gray-500">score {v.total}</span>
+              <span className="ml-2 text-muted">score {v.total}</span>
             ) : null}
           </div>
           <button
             type="button"
             onClick={() => download(v.sections)}
-            className="rounded-md border border-gray-300 px-2.5 py-1 text-xs hover:bg-gray-50"
+            className="rounded-md border border-line px-2.5 py-1 text-xs hover:bg-white/5"
           >
             Download PDF
           </button>

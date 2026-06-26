@@ -55,7 +55,7 @@ export function ApplicationScore({
           type="button"
           onClick={runReview}
           disabled={loading}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+          className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5 disabled:opacity-50"
         >
           {loading
             ? "Reviewing…"
@@ -64,18 +64,18 @@ export function ApplicationScore({
               : "Run AI impact review"}
         </button>
         {rubric ? (
-          <span className="text-xs text-green-700">
+          <span className="text-xs text-green-400">
             AI rubric applied (C2/C3 + semantic coverage)
           </span>
         ) : (
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-faint">
             Adds per-bullet outcome scoring (~3–5¢)
           </span>
         )}
       </div>
 
       {error ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-400" role="alert">
           {error}
         </p>
       ) : null}

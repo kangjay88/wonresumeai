@@ -3,9 +3,9 @@
 import type { CategoryReport, ScoreReport } from "@/lib/scoring";
 
 function tone(score: number): string {
-  if (score >= 80) return "text-green-700";
-  if (score >= 60) return "text-amber-600";
-  return "text-red-600";
+  if (score >= 80) return "text-green-400";
+  if (score >= 60) return "text-amber-400";
+  return "text-red-400";
 }
 
 function barTone(score: number): string {
@@ -21,7 +21,7 @@ function CategoryRow({ category }: { category: CategoryReport }) {
         <span className="font-medium">{category.label}</span>
         <span className={tone(category.score)}>{category.score}</span>
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
         <div
           className={`h-full rounded-full ${barTone(category.score)}`}
           style={{ width: `${category.score}%` }}
@@ -30,8 +30,8 @@ function CategoryRow({ category }: { category: CategoryReport }) {
       {category.topFixes.length ? (
         <ul className="mt-1 space-y-0.5">
           {category.topFixes.map((fix, i) => (
-            <li key={i} className="text-xs leading-snug text-gray-500">
-              <span className="font-mono text-[10px] text-gray-400">
+            <li key={i} className="text-xs leading-snug text-muted">
+              <span className="font-mono text-[10px] text-faint">
                 {fix.checkId}
               </span>{" "}
               {fix.message}
@@ -45,19 +45,19 @@ function CategoryRow({ category }: { category: CategoryReport }) {
 
 export function ScorePanel({ report }: { report: ScoreReport }) {
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 p-4">
+    <div className="space-y-4 rounded-lg border border-line p-4">
       <div className="flex items-baseline justify-between">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
           Resume score
         </h2>
         <div className="flex items-baseline gap-1">
           <span className={`text-3xl font-bold ${tone(report.total)}`}>
             {report.total}
           </span>
-          <span className="text-sm text-gray-400">/100</span>
+          <span className="text-sm text-faint">/100</span>
         </div>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted">
         {report.hasJD
           ? "Scored against the job description."
           : "Base score (no job description). Add a JD in an application for keyword scoring."}

@@ -32,18 +32,18 @@ export function CoverLetterVersionList({
   }
 
   if (!versions.length) {
-    return <p className="text-xs text-gray-400">No cover letters yet.</p>;
+    return <p className="text-xs text-faint">No cover letters yet.</p>;
   }
 
   return (
-    <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200">
+    <ul className="divide-y divide-line rounded-lg border border-line">
       {versions.map((v) => (
         <li key={v.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
           <span className="font-medium">Cover letter v{v.version}</span>
           <button
             type="button"
             onClick={() => download(v.content)}
-            className="rounded-md border border-gray-300 px-2.5 py-1 text-xs hover:bg-gray-50"
+            className="rounded-md border border-line px-2.5 py-1 text-xs hover:bg-white/5"
           >
             Download PDF
           </button>

@@ -14,17 +14,17 @@ export default async function OnboardingPage() {
     .maybeSingle();
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6 p-6 lg:p-8">
       <div className="space-y-1">
         <h1 className="text-xl font-semibold">Career memory</h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted">
           Upload your resume PDF. We&apos;ll read it into a structured profile
           you can review and edit, then use it to tailor future applications.
         </p>
       </div>
 
       {memory ? (
-        <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <p className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-300">
           You already have career memory saved. Uploading a new resume will
           replace it.
         </p>

@@ -82,3 +82,35 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
   cards → cover-letter PDF + versioned saves; dashboard status pipeline with
   per-status filtering; resume + cover-letter version history with re-export on
   each application.
+
+### Phase 6 — Polish & UX (planned, post-launch)
+
+Deployed and in real use; these are pulled from real usage + the competitive
+analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
+
+**UX redesign (next focus — draw from competitor patterns via Mobbin):**
+- [ ] **Design system / color palette** — replace the grayscale-default look
+  with an intentional palette + typography; centralize tokens (Tailwind theme)
+  so the whole app is restyleable from one place.
+- [ ] **Dashboard redesign** — stronger applications overview (pipeline at a
+  glance, recent activity, quick "new application" entry).
+- [ ] **Job application status** — richer status pipeline (board/kanban or
+  improved pipeline view) beyond today's filter chips.
+- [ ] **Multi-step application flow** — turn the single application-detail page
+  into a guided stepper: **1) Extract JD + AI score → 2) Tailor resume →
+  3) Create cover letter**, with progress indication and per-step completion.
+
+**Scoring / quality (competitive gaps):**
+- [ ] Real spell-check (currently D10 is info-only) — close the table-stakes gap.
+- [ ] Imported-PDF parse validation (multi-column / scanned detection) so
+  uploaded resumes score honestly, not assumed-clean.
+- [ ] Apply the null-tolerant `lenientString` schema pattern to the
+  `parse-resume` and `extract-jd` schemas (robustness debt noted during Phase 4).
+
+**Feature polish (from `docs/PLAN.md` §6 + analysis):**
+- [ ] Version diff view — side-by-side compare of two saved resume versions.
+- [ ] Career-memory & voice management — edit profile/target roles + manage
+  voice samples without re-uploading; surface what tailoring learned from
+  `suggestion_edits`.
+- [ ] Persist the AI rubric review on the document score snapshot (avoid re-paying).
+- [ ] Prompt tuning from real accept/reject data.
