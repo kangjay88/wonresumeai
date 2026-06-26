@@ -104,6 +104,21 @@ export const parsedResumeSchema = z.object({
 
 export type ParsedResume = z.infer<typeof parsedResumeSchema>;
 
+// ---------------------------------------------------------------------------
+// JD extraction (applications.jd_extraction): cached Haiku output, consumed by
+// the keyword-match scoring category (B) and the tailoring prompt.
+// ---------------------------------------------------------------------------
+
+export const jdExtractionSchema = z.object({
+  required_skills: z.array(z.string()).default([]),
+  preferred_skills: z.array(z.string()).default([]),
+  title_variants: z.array(z.string()).default([]),
+  seniority_signals: z.array(z.string()).default([]),
+  domain_terms: z.array(z.string()).default([]),
+});
+
+export type JdExtraction = z.infer<typeof jdExtractionSchema>;
+
 /** An empty resume — the starting point for a from-scratch builder. */
 export function emptyResumeSections(): ResumeSections {
   return resumeSectionsSchema.parse({ contact: {} });

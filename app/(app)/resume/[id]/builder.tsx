@@ -1,13 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 
 import { ResumeSectionsEditor } from "@/components/resume-editor";
+import { scoreResume } from "@/lib/scoring";
 import { resumeFileName } from "@/lib/pdf/filename";
 import type { ResumeSections } from "@/lib/types";
 
 import { saveResume } from "./actions";
+import { ScorePanel } from "./score-panel";
 
 // PDFViewer is browser-only — never render it on the server.
 const PdfPreview = dynamic(() => import("./pdf-preview"), {
@@ -40,6 +42,9 @@ export function ResumeBuilder({
     JSON.stringify(initialSections)
   );
   const dirty = JSON.stringify(sections) !== savedSnapshot;
+
+  // Live score — pure + cheap, recompute on every edit (no JD in the builder).
+  const report = useMemo(() => scoreResume(sections), [sections]);
 
   // Debounce preview re-renders so typing stays smooth.
   useEffect(() => {
@@ -109,7 +114,8 @@ export function ResumeBuilder({
 
       {/* Two-pane: editor / live preview */}
       <div className="grid flex-1 grid-cols-1 gap-6 overflow-hidden pt-4 lg:grid-cols-2">
-        <div className="overflow-y-auto pr-2">
+        <div className="space-y-6 overflow-y-auto pr-2">
+          <ScorePanel report={report} />
           <ResumeSectionsEditor sections={sections} onChange={setSections} />
         </div>
         <div className="hidden h-full overflow-hidden rounded-md border border-gray-200 bg-gray-100 lg:block">

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "calibrate": "tsx scripts/calibrate.ts",
+    "verify:pdf": "tsx scripts/verify-pdf.tsx"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",

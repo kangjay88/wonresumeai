@@ -66,6 +66,10 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
   `<PDFViewer>` and client-side download — both render the single
   `lib/pdf/resume-document.tsx` template (no layout drift). PDF generated
   client-side, not via a server route.
-- [ ] Phase 3 — Scoring engine
+- [x] **Phase 3 — Scoring engine**: `lib/scoring/` implements the spec's
+  deterministic checks (A ATS, B keywords/JD, C impact, D language) as pure
+  functions returning subscores + concrete fixes; live score panel in the
+  builder (no-JD: A/C/D); `npm run calibrate` ranks real > weakened and
+  hand-tailored > real. C2/C3 LLM rubric deferred to Phase 4.
 - [ ] Phase 4 — Applications + tailoring
 - [ ] Phase 5 — Cover letters + dashboard
