@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui";
 import { coverLetterFileName } from "@/lib/pdf/filename";
 import type { CoverLetterContent } from "@/lib/types";
 
@@ -40,13 +41,13 @@ export function CoverLetterVersionList({
       {versions.map((v) => (
         <li key={v.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
           <span className="font-medium">Cover letter v{v.version}</span>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => download(v.content)}
-            className="rounded-md border border-line px-2.5 py-1 text-xs hover:bg-white/5"
           >
             Download PDF
-          </button>
+          </Button>
         </li>
       ))}
     </ul>

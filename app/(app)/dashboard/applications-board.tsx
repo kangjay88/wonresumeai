@@ -108,12 +108,12 @@ function FilterChip({
       onClick={onClick}
       className={`rounded-full border px-3 py-1 text-xs capitalize transition-colors ${
         active
-          ? "border-brand-600 bg-brand-600 text-white"
+          ? "border-brand-600 bg-brand-600 text-canvas"
           : "border-line text-muted hover:bg-white/5"
       }`}
     >
       {label}
-      <span className={active ? "ml-1 text-white/70" : "ml-1 text-faint"}>{count}</span>
+      <span className={active ? "ml-1 text-canvas/70" : "ml-1 text-faint"}>{count}</span>
     </button>
   );
 }

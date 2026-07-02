@@ -1,41 +1,43 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Dark theme (SaaS-inspired). Re-theme by changing values here:
- *   - brand-*  : accent / primary actions (Indigo)
+ * Design tokens. Dark theme (slate + coral). Re-theme by changing values here:
+ *   - brand-*  : accent / primary actions (Coral #EF8354)
+ *   - accent-* : cool secondary (Slate blue #4F5D75)
  *   - canvas   : page background      card: elevated surfaces
  *   - line     : hairline borders     ink/muted/faint: text hierarchy
+ * Source palette: #2D3142 #4F5D75 #BFC0C0 #FFFFFF #EF8354
  */
 @theme {
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-300: #a5b4fc;
-  --color-brand-400: #818cf8;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
-  --color-brand-950: #1e1b4b;
+  --color-brand-50: #fdf2ec;
+  --color-brand-100: #fbe3d6;
+  --color-brand-200: #f8c9ae;
+  --color-brand-300: #f4ac82;
+  --color-brand-400: #f1975f;
+  --color-brand-500: #ef8354;
+  --color-brand-600: #e76f3c;
+  --color-brand-700: #d65a28;
+  --color-brand-800: #b0491f;
+  --color-brand-900: #8e3c1d;
+  --color-brand-950: #4d1f0e;
 
-  --color-accent-400: #22d3ee;
-  --color-accent-500: #06b6d4;
-  --color-accent-600: #0891b2;
+  --color-accent-400: #6e7c97;
+  --color-accent-500: #4f5d75;
+  --color-accent-600: #3e4a5e;
 
-  /* Semantic neutrals — dark */
-  --color-canvas: #0b0e14;
-  --color-card: #141a24;
-  --color-line: #232b3a;
-  --color-ink: #e6e8ec;
-  --color-muted: #98a2b3;
-  --color-faint: #6b7480;
+  /* Semantic neutrals — dark (from the slate palette) */
+  --color-canvas: #1b1e28;
+  --color-card: #2d3142;
+  --color-line: #3a4152;
+  --color-ink: #ffffff;
+  --color-muted: #bfc0c0;
+  --color-faint: #8b91a3;
 }
 
 :root {
-  --background: #0b0e14;
-  --foreground: #e6e8ec;
-  --surface: #0b0e14;
+  --background: #1b1e28;
+  --foreground: #ffffff;
+  --surface: #1b1e28;
 }
 
 @theme inline {

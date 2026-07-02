@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from "react";
 
+import { Button, Card } from "@/components/ui";
 import type { JdExtraction, ResumeSections } from "@/lib/types";
 
 import { ApplicationScore } from "./application-score";
@@ -62,7 +63,7 @@ export function ApplicationWizard({
   return (
     <div className="space-y-6">
       {/* Stepper */}
-      <div className="flex items-center rounded-xl border border-line bg-card px-4 py-3">
+      <Card className="flex items-center px-4 py-3">
         {STEPS.map((s, i) => {
           const active = step === s.n;
           const complete = isDone(s.n);
@@ -76,7 +77,7 @@ export function ApplicationWizard({
                 <span
                   className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold transition-colors ${
                     complete
-                      ? "border-brand-600 bg-brand-600 text-white"
+                      ? "border-brand-600 bg-brand-600 text-canvas"
                       : active
                         ? "border-brand-500 bg-brand-500/15 text-brand-300"
                         : "border-line text-faint"
@@ -98,7 +99,7 @@ export function ApplicationWizard({
             </Fragment>
           );
         })}
-      </div>
+      </Card>
 
       {/* Step content */}
       <div key={step} className="fade-in">
@@ -155,22 +156,17 @@ export function ApplicationWizard({
 
       {/* Nav */}
       <div className="flex items-center justify-between border-t border-line pt-4">
-        <button
-          type="button"
+        <Button
+          variant="secondary"
           onClick={() => setStep((s) => Math.max(1, s - 1))}
           disabled={step === 1}
-          className="rounded-md border border-line px-4 py-2 text-sm font-medium hover:bg-white/5 disabled:opacity-40"
         >
           ← Back
-        </button>
+        </Button>
         {step < 3 ? (
-          <button
-            type="button"
-            onClick={() => setStep((s) => Math.min(3, s + 1))}
-            className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-          >
+          <Button onClick={() => setStep((s) => Math.min(3, s + 1))}>
             Next →
-          </button>
+          </Button>
         ) : (
           <span className="text-xs text-faint">Final step</span>
         )}

@@ -8,6 +8,7 @@ import {
   ResumeSectionsEditor,
   Section,
 } from "@/components/resume-editor";
+import { Button } from "@/components/ui";
 import type { ParsedResume, ResumeSections } from "@/lib/types";
 
 import { persistCareerMemory } from "./actions";
@@ -95,14 +96,9 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
         </p>
       ) : null}
 
-      <button
-        type="button"
-        onClick={handleParse}
-        disabled={!file || loading}
-        className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-      >
+      <Button onClick={handleParse} disabled={!file || loading}>
         {loading ? "Reading resume…" : "Parse resume"}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -172,14 +168,9 @@ function ConfirmStep({
       ) : null}
 
       <div className="flex items-center gap-3 border-t border-line pt-4">
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={saving}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <Button onClick={handleSave} disabled={saving}>
           {saving ? "Saving…" : "Save career memory"}
-        </button>
+        </Button>
         <button
           type="button"
           onClick={onBack}

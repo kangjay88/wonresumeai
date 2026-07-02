@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { CardSkeleton } from "@/components/skeleton";
+import { Button, Input, Textarea } from "@/components/ui";
 import { coverLetterFileName } from "@/lib/pdf/filename";
 import type {
   Contact,
@@ -120,14 +121,9 @@ export function CoverLetterPanel({
           Generate a cover letter in your voice from your tailored resume and
           this job — resume-backed, no fabricated claims.
         </p>
-        <button
-          type="button"
-          onClick={generate}
-          disabled={loading}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <Button onClick={generate} disabled={loading}>
           {loading ? "Writing…" : "Generate cover letter"}
-        </button>
+        </Button>
         {loading ? (
           <div className="space-y-3 pt-2">
             <CardSkeleton lines={3} />
@@ -152,11 +148,7 @@ export function CoverLetterPanel({
 
       <label className="block space-y-1">
         <span className="text-xs font-medium text-muted">Greeting</span>
-        <input
-          value={greeting}
-          onChange={(e) => setGreeting(e.target.value)}
-          className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
-        />
+        <Input value={greeting} onChange={(e) => setGreeting(e.target.value)} />
       </label>
 
       {result.paragraphs.map((p, i) => {
@@ -168,11 +160,10 @@ export function CoverLetterPanel({
             className={`space-y-2 rounded-md border border-line p-3 ${st === "rejected" ? "opacity-50" : ""}`}
           >
             {isEditing ? (
-              <textarea
+              <Textarea
                 value={textOf(i, p.suggested)}
                 rows={4}
                 onChange={(e) => setEdited((prev) => ({ ...prev, [i]: e.target.value }))}
-                className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
               />
             ) : (
               <p className="text-sm">{textOf(i, p.suggested)}</p>
@@ -181,21 +172,18 @@ export function CoverLetterPanel({
 
             {isEditing ? (
               <div className="flex gap-2">
-                <button
+                <Button
+                  size="sm"
                   onClick={() => {
                     setStatus((s) => ({ ...s, [i]: "accepted" }));
                     setEditing(null);
                   }}
-                  className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
                 >
                   Accept edited
-                </button>
-                <button
-                  onClick={() => setEditing(null)}
-                  className="rounded-md border border-line px-2.5 py-1 text-xs"
-                >
+                </Button>
+                <Button variant="secondary" size="sm" onClick={() => setEditing(null)}>
                   Cancel
-                </button>
+                </Button>
               </div>
             ) : st === "accepted" ? (
               <div className="flex items-center gap-2 text-xs">
@@ -219,24 +207,23 @@ export function CoverLetterPanel({
               </div>
             ) : (
               <div className="flex gap-2">
-                <button
+                <Button
+                  size="sm"
                   onClick={() => setStatus((s) => ({ ...s, [i]: "accepted" }))}
-                  className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
                 >
                   Accept
-                </button>
-                <button
-                  onClick={() => setEditing(i)}
-                  className="rounded-md border border-line px-2.5 py-1 text-xs"
-                >
+                </Button>
+                <Button variant="secondary" size="sm" onClick={() => setEditing(i)}>
                   Edit
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="text-muted"
                   onClick={() => setStatus((s) => ({ ...s, [i]: "rejected" }))}
-                  className="rounded-md border border-line px-2.5 py-1 text-xs text-muted"
                 >
                   Reject
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -244,22 +231,19 @@ export function CoverLetterPanel({
       })}
 
       <div className="flex flex-wrap items-center gap-3 border-t border-line pt-3">
-        <button
-          type="button"
+        <Button
           onClick={save}
           disabled={saving || acceptedParagraphs.length === 0}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save cover letter"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="secondary"
           onClick={download}
           disabled={acceptedParagraphs.length === 0}
-          className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5 disabled:opacity-50"
         >
           Download PDF
-        </button>
+        </Button>
         <button
           type="button"
           onClick={generate}

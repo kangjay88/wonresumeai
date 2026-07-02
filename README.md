@@ -89,9 +89,12 @@ Deployed and in real use; these are pulled from real usage + the competitive
 analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
 
 **UX redesign (next focus — draw from competitor patterns via Mobbin):**
-- [ ] **Design system / color palette** — replace the grayscale-default look
-  with an intentional palette + typography; centralize tokens (Tailwind theme)
-  so the whole app is restyleable from one place.
+- [x] **Design system / color palette** — intentional slate + coral palette
+  (`#2D3142 #4F5D75 #BFC0C0 #FFFFFF #EF8354`) driven entirely from the
+  `@theme` token block in `app/globals.css`; reusable UI primitives in
+  `components/ui/` (`Button`, `Input`/`Textarea`/`Select`, `Card`, `Badge` +
+  `buttonClass` for styled `<Link>`s) replace the ~40 copy-pasted class
+  strings, so buttons/fields/surfaces are now restyleable from one place too.
 - [ ] **Dashboard redesign** — stronger applications overview (pipeline at a
   glance, recent activity, quick "new application" entry).
 - [ ] **Job application status** — richer status pipeline (board/kanban or

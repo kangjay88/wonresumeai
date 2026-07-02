@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { ScorePanel } from "@/app/(app)/resume/[id]/score-panel";
+import { Button } from "@/components/ui";
 import { scoreResume } from "@/lib/scoring";
 import type { JdExtraction, ResumeSections, ReviewResult } from "@/lib/types";
 
@@ -51,18 +52,13 @@ export function ApplicationScore({
       <ScorePanel report={report} />
 
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={runReview}
-          disabled={loading}
-          className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5 disabled:opacity-50"
-        >
+        <Button variant="secondary" onClick={runReview} disabled={loading}>
           {loading
             ? "Reviewing…"
             : rubric
               ? "Re-run AI review"
               : "Run AI impact review"}
-        </button>
+        </Button>
         {rubric ? (
           <span className="text-xs text-green-400">
             AI rubric applied (C2/C3 + semantic coverage)

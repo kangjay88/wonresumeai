@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 
+import { Button, Input } from "@/components/ui";
+
 import { signIn, type AuthState } from "./actions";
 
 export default function LoginPage() {
@@ -25,13 +27,12 @@ export default function LoginPage() {
             <label htmlFor="email" className="text-sm font-medium">
               Email
             </label>
-            <input
+            <Input
               id="email"
               name="email"
               type="email"
               autoComplete="email"
               required
-              className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
             />
           </div>
 
@@ -39,13 +40,12 @@ export default function LoginPage() {
             <label htmlFor="password" className="text-sm font-medium">
               Password
             </label>
-            <input
+            <Input
               id="password"
               name="password"
               type="password"
               autoComplete="current-password"
               required
-              className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
             />
           </div>
 
@@ -55,13 +55,9 @@ export default function LoginPage() {
             </p>
           ) : null}
 
-          <button
-            type="submit"
-            disabled={signingIn}
-            className="w-full rounded-md bg-brand-600 hover:bg-brand-700 px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
-          >
+          <Button type="submit" fullWidth disabled={signingIn}>
             {signingIn ? "Signing in…" : "Sign in"}
-          </button>
+          </Button>
         </form>
       </div>
     </main>

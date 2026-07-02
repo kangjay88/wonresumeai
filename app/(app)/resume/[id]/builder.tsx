@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState, useTransition } from "react";
 
 import { ResumeSectionsEditor } from "@/components/resume-editor";
+import { Button } from "@/components/ui";
 import { scoreResume } from "@/lib/scoring";
 import { resumeFileName } from "@/lib/pdf/filename";
 import type { ResumeSections } from "@/lib/types";
@@ -136,21 +137,12 @@ export function ResumeBuilder({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleDownload}
-            className="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-white/5"
-          >
+          <Button variant="secondary" onClick={handleDownload}>
             Download PDF
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving || !dirty}
-            className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-          >
+          </Button>
+          <Button onClick={handleSave} disabled={saving || !dirty}>
             {saving ? "Saving…" : "Save"}
-          </button>
+          </Button>
         </div>
       </div>
 

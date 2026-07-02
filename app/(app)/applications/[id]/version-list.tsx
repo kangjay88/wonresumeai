@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui";
 import { resumeFileName } from "@/lib/pdf/filename";
 import type { ResumeSections } from "@/lib/types";
 
@@ -46,13 +47,13 @@ export function VersionList({ versions }: { versions: VersionItem[] }) {
               <span className="ml-2 text-muted">score {v.total}</span>
             ) : null}
           </div>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => download(v.sections)}
-            className="rounded-md border border-line px-2.5 py-1 text-xs hover:bg-white/5"
           >
             Download PDF
-          </button>
+          </Button>
         </li>
       ))}
     </ul>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Input, Textarea } from "@/components/ui";
 import type {
   EducationEntry,
   ExperienceEntry,
@@ -297,7 +298,7 @@ function BulletsEditor({
       <label className="text-xs font-medium text-muted">
         Bullets (one per line)
       </label>
-      <textarea
+      <Textarea
         value={bullets.join("\n")}
         rows={Math.max(3, bullets.length)}
         onChange={(e) =>
@@ -313,7 +314,6 @@ function BulletsEditor({
               .filter(Boolean)
           )
         }
-        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </div>
   );
@@ -357,11 +357,10 @@ export function Field({
   return (
     <label className="block space-y-1">
       <span className="text-xs font-medium text-muted">{label}</span>
-      <input
+      <Input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </label>
   );
@@ -377,11 +376,10 @@ export function TextArea({
   onChange: (v: string) => void;
 }) {
   return (
-    <textarea
+    <Textarea
       value={value}
       rows={rows}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
     />
   );
 }
@@ -427,7 +425,7 @@ export function ChipList({
           </span>
         ))}
       </div>
-      <input
+      <Input
         type="text"
         value={input}
         placeholder={placeholder}
@@ -439,7 +437,6 @@ export function ChipList({
           }
         }}
         onBlur={add}
-        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
       />
     </div>
   );

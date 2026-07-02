@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { buttonClass, Card } from "@/components/ui";
 import { requireUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ApplicationStatus } from "@/lib/supabase/types";
@@ -17,7 +18,7 @@ function StatCard({
   accent?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-line bg-card p-4">
+    <Card className="p-4">
       <p className="text-xs font-medium uppercase tracking-wide text-muted">
         {label}
       </p>
@@ -28,7 +29,7 @@ function StatCard({
       >
         {value}
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -56,19 +57,16 @@ export default async function DashboardPage() {
   if (!ready) {
     return (
       <div className="mx-auto max-w-3xl p-6 lg:p-8">
-        <div className="space-y-3 rounded-xl border border-line bg-card p-6">
+        <Card className="space-y-3 p-6">
           <h2 className="text-base font-semibold">Set up your career memory</h2>
           <p className="text-sm text-muted">
             Upload your resume once so applications can be scored and tailored to
             each job description.
           </p>
-          <Link
-            href="/onboarding"
-            className="inline-block rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-          >
+          <Link href="/onboarding" className={buttonClass()}>
             Start onboarding
           </Link>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -85,10 +83,7 @@ export default async function DashboardPage() {
             Track, score, and tailor every application.
           </p>
         </div>
-        <Link
-          href="/applications/new"
-          className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-        >
+        <Link href="/applications/new" className={buttonClass()}>
           New application
         </Link>
       </header>

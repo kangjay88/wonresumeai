@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { CardSkeleton } from "@/components/skeleton";
+import { Badge, Button, Textarea } from "@/components/ui";
 import { scoreResume } from "@/lib/scoring";
 import type {
   JdExtraction,
@@ -152,14 +153,9 @@ export function TailorPanel({
           Generate voice-preserving suggestions that surface the job&apos;s
           keywords and strengthen weak bullets — never fabricating metrics.
         </p>
-        <button
-          type="button"
-          onClick={runTailor}
-          disabled={loading}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <Button onClick={runTailor} disabled={loading}>
           {loading ? "Tailoring…" : "Tailor resume"}
-        </button>
+        </Button>
         {loading ? (
           <div className="space-y-3 pt-2">
             <CardSkeleton lines={2} />
@@ -269,14 +265,9 @@ export function TailorPanel({
 
       {/* Save */}
       <div className="flex items-center gap-3 border-t border-line pt-3">
-        <button
-          type="button"
-          onClick={save}
-          disabled={saving || acceptedCount === 0}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <Button onClick={save} disabled={saving || acceptedCount === 0}>
           {saving ? "Saving…" : `Save version (${acceptedCount} accepted)`}
-        </button>
+        </Button>
         <button
           type="button"
           onClick={runTailor}
@@ -336,24 +327,15 @@ function ActionRow({
     );
   return (
     <div className="flex gap-2">
-      <button
-        onClick={onAccept}
-        className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
-      >
+      <Button size="sm" onClick={onAccept}>
         Accept
-      </button>
-      <button
-        onClick={onEdit}
-        className="rounded-md border border-line px-2.5 py-1 text-xs"
-      >
+      </Button>
+      <Button variant="secondary" size="sm" onClick={onEdit}>
         Edit
-      </button>
-      <button
-        onClick={onReject}
-        className="rounded-md border border-line px-2.5 py-1 text-xs text-muted"
-      >
+      </Button>
+      <Button variant="secondary" size="sm" className="text-muted" onClick={onReject}>
         Reject
-      </button>
+      </Button>
     </div>
   );
 }
@@ -371,22 +353,14 @@ function EditArea({
 }) {
   return (
     <div className="space-y-2">
-      <textarea
-        value={value}
-        rows={3}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
-      />
+      <Textarea value={value} rows={3} onChange={(e) => onChange(e.target.value)} />
       <div className="flex gap-2">
-        <button
-          onClick={onSave}
-          className="rounded-md bg-brand-600 hover:bg-brand-700 px-2.5 py-1 text-xs font-medium text-white"
-        >
+        <Button size="sm" onClick={onSave}>
           Accept edited
-        </button>
-        <button onClick={onCancel} className="rounded-md border border-line px-2.5 py-1 text-xs">
+        </Button>
+        <Button variant="secondary" size="sm" onClick={onCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -465,9 +439,7 @@ function BulletCard({
       {bullet.keywords_addressed.length ? (
         <div className="flex flex-wrap gap-1">
           {bullet.keywords_addressed.map((k, i) => (
-            <span key={i} className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted">
-              {k}
-            </span>
+            <Badge key={i}>{k}</Badge>
           ))}
         </div>
       ) : null}
