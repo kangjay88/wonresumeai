@@ -95,8 +95,10 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   `components/ui/` (`Button`, `Input`/`Textarea`/`Select`, `Card`, `Badge` +
   `buttonClass` for styled `<Link>`s) replace the ~40 copy-pasted class
   strings, so buttons/fields/surfaces are now restyleable from one place too.
-- [ ] **Dashboard redesign** — stronger applications overview (pipeline at a
-  glance, recent activity, quick "new application" entry).
+- [x] **Dashboard redesign** — interactive pipeline overview (each stage a
+  stat cell that doubles as the list filter), applications list beside a
+  recent-activity feed (merged application-created + document-save events),
+  and quick "new application" entry in the header and empty state.
 - [ ] **Job application status** — richer status pipeline (board/kanban or
   improved pipeline view) beyond today's filter chips.
 - [x] **Multi-step application flow** — application page is a guided stepper

@@ -3,52 +3,50 @@ import Link from "next/link";
 import { buttonClass, Card } from "@/components/ui";
 import { requireUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { ApplicationStatus } from "@/lib/supabase/types";
 import { careerProfileSchema } from "@/lib/types";
 
 import { ApplicationsBoard, type AppRow } from "./applications-board";
+import type { ActivityItem, ActivityKind } from "./recent-activity";
 
-function StatCard({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: number;
-  accent?: boolean;
-}) {
-  return (
-    <Card className="p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted">
-        {label}
-      </p>
-      <p
-        className={`mt-1 text-3xl font-semibold ${
-          accent ? "text-brand-400" : "text-ink"
-        }`}
-      >
-        {value}
-      </p>
-    </Card>
-  );
+/** Relative time, computed at request time (server-rendered, so no client
+ *  hydration drift). */
+function timeAgo(iso: string): string {
+  const seconds = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  if (seconds < 60) return "just now";
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (days < 7) return `${days}d ago`;
+  if (days < 35) return `${Math.floor(days / 7)}w ago`;
+  if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+  return `${Math.floor(days / 365)}y ago`;
 }
 
 export default async function DashboardPage() {
   const user = await requireUser();
   const supabase = await createSupabaseServerClient();
 
-  const [{ data: memory }, { data: applications }] = await Promise.all([
-    supabase
-      .from("career_memory")
-      .select("profile")
-      .eq("user_id", user.id)
-      .maybeSingle(),
-    supabase
-      .from("applications")
-      .select("id, company, role_title, status, created_at")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false }),
-  ]);
+  const [{ data: memory }, { data: applications }, { data: documents }] =
+    await Promise.all([
+      supabase
+        .from("career_memory")
+        .select("profile")
+        .eq("user_id", user.id)
+        .maybeSingle(),
+      supabase
+        .from("applications")
+        .select("id, company, role_title, status, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("documents")
+        .select("application_id, doc_type, version, score, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(10),
+    ]);
 
   const ready = Boolean(
     memory && careerProfileSchema.safeParse(memory.profile).success
@@ -71,8 +69,44 @@ export default async function DashboardPage() {
     );
   }
 
-  const apps = (applications ?? []) as AppRow[];
-  const count = (s: ApplicationStatus) => apps.filter((a) => a.status === s).length;
+  const apps = (applications ?? []) as (AppRow & { created_at: string })[];
+  const appById = new Map(apps.map((a) => [a.id, a]));
+
+  // Merge document saves + application-created events into one timeline.
+  const events: { at: string; item: Omit<ActivityItem, "timeAgo"> }[] = [];
+  for (const d of documents ?? []) {
+    const app = appById.get(d.application_id);
+    if (!app) continue;
+    const score = (d.score as { total?: number } | null)?.total ?? null;
+    events.push({
+      at: d.created_at,
+      item: {
+        id: `doc-${d.application_id}-${d.doc_type}-${d.version}`,
+        kind: d.doc_type as ActivityKind,
+        appId: app.id,
+        company: app.company,
+        role: app.role_title,
+        version: d.version,
+        score,
+      },
+    });
+  }
+  for (const a of apps) {
+    events.push({
+      at: a.created_at,
+      item: {
+        id: `app-${a.id}`,
+        kind: "created",
+        appId: a.id,
+        company: a.company,
+        role: a.role_title,
+      },
+    });
+  }
+  const activity: ActivityItem[] = events
+    .sort((x, y) => y.at.localeCompare(x.at))
+    .slice(0, 6)
+    .map((e) => ({ ...e.item, timeAgo: timeAgo(e.at) }));
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6 lg:p-8">
@@ -88,18 +122,7 @@ export default async function DashboardPage() {
         </Link>
       </header>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Total" value={apps.length} />
-        <StatCard label="Applied" value={count("applied")} />
-        <StatCard label="Interviewing" value={count("interviewing")} />
-        <StatCard
-          label="Offers"
-          value={count("offer") + count("accepted")}
-          accent
-        />
-      </div>
-
-      <ApplicationsBoard applications={apps} />
+      <ApplicationsBoard applications={apps} activity={activity} />
     </div>
   );
 }
