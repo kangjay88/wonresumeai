@@ -18,7 +18,9 @@ export function Pipeline({
   counts: Record<ApplicationStatus, number>;
   total: number;
   active: Filter;
-  onSelect: (filter: Filter) => void;
+  /** Omit to render a non-interactive overview (e.g. in board view, where
+   *  filtering columns makes no sense). */
+  onSelect?: (filter: Filter) => void;
 }) {
   const max = Math.max(1, ...STAGES.map((s) => counts[s]));
 
@@ -31,7 +33,7 @@ export function Pipeline({
         bar="bg-brand-500"
         text="text-brand-400"
         active={active === "all"}
-        onClick={() => onSelect("all")}
+        onSelect={onSelect ? () => onSelect("all") : undefined}
       />
       {STAGES.map((s) => (
         <Cell
@@ -42,7 +44,7 @@ export function Pipeline({
           bar={STATUS_META[s].bar}
           text={STATUS_META[s].text}
           active={active === s}
-          onClick={() => onSelect(active === s ? "all" : s)}
+          onSelect={onSelect ? () => onSelect(active === s ? "all" : s) : undefined}
         />
       ))}
     </div>
@@ -56,7 +58,7 @@ function Cell({
   bar,
   text,
   active,
-  onClick,
+  onSelect,
 }: {
   label: string;
   count: number;
@@ -64,20 +66,10 @@ function Cell({
   bar: string;
   text: string;
   active: boolean;
-  onClick: () => void;
+  onSelect?: () => void;
 }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "rounded-xl border bg-card p-3 text-left transition-colors",
-        active
-          ? "border-brand-500 ring-1 ring-brand-500/40"
-          : "border-line hover:border-faint",
-      )}
-    >
+  const body = (
+    <>
       <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
         {label}
       </p>
@@ -92,6 +84,28 @@ function Cell({
       <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
         <div className={cn("h-full rounded-full", bar)} style={{ width: `${pct}%` }} />
       </div>
+    </>
+  );
+
+  if (!onSelect) {
+    return (
+      <div className="rounded-xl border border-line bg-card p-3">{body}</div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={cn(
+        "rounded-xl border bg-card p-3 text-left transition-colors",
+        active
+          ? "border-brand-500 ring-1 ring-brand-500/40"
+          : "border-line hover:border-faint",
+      )}
+    >
+      {body}
     </button>
   );
 }

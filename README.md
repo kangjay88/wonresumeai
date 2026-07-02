@@ -99,8 +99,11 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   stat cell that doubles as the list filter), applications list beside a
   recent-activity feed (merged application-created + document-save events),
   and quick "new application" entry in the header and empty state.
-- [ ] **Job application status** — richer status pipeline (board/kanban or
-  improved pipeline view) beyond today's filter chips.
+- [x] **Job application status** — List/Board view toggle on the dashboard;
+  the Board is a drag-and-drop kanban (native HTML5 DnD, no dependency) with a
+  column per stage. Dropping a card persists the move via
+  `updateApplicationStatus` with optimistic local state (reverts on failure)
+  and live-updating pipeline counts.
 - [x] **Multi-step application flow** — application page is a guided stepper
   (Score & JD → Tailor resume → Cover letter) with a clickable progress header,
   per-step completion checks, and Back/Next (`application-wizard.tsx`).
@@ -109,11 +112,12 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   in-panel skeletons during AI generation, and a fade-in on step changes.
 
 **Scoring / quality (competitive gaps):**
-- [ ] Real spell-check (currently D10 is info-only) — close the table-stakes gap.
 - [ ] Imported-PDF parse validation (multi-column / scanned detection) so
   uploaded resumes score honestly, not assumed-clean.
-- [ ] Apply the null-tolerant `lenientString` schema pattern to the
-  `parse-resume` and `extract-jd` schemas (robustness debt noted during Phase 4).
+- [x] Apply the null-tolerant `lenientString` schema pattern to the
+  `parse-resume` and `extract-jd` schemas — plus a `lenientStringArray`
+  companion so a `null` array (or `null`/blank items) degrades to `[]`/clean
+  strings instead of throwing (robustness debt noted during Phase 4).
 
 **Feature polish (from `docs/PLAN.md` §6 + analysis):**
 - [ ] Version diff view — side-by-side compare of two saved resume versions.

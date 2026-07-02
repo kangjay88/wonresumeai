@@ -19,46 +19,60 @@ import { z } from "zod";
 // Types below are inferred from these so the schema is the single definition.
 // ---------------------------------------------------------------------------
 
+/** Tolerates models that emit `null` (not just omit) for empty string fields. */
+const lenientString = z
+  .string()
+  .nullish()
+  .transform((v) => v ?? "");
+
+/** Tolerates a null/omitted array and null/blank items; yields a clean
+ *  string[]. Models sometimes return `null` for an "empty" list, which a plain
+ *  `.default([])` (undefined-only) would reject. */
+const lenientStringArray = z
+  .array(lenientString)
+  .nullish()
+  .transform((arr) => (arr ?? []).map((s) => s.trim()).filter(Boolean));
+
 export const contactSchema = z.object({
-  name: z.string().default(""),
-  email: z.string().default(""),
-  phone: z.string().default(""),
-  location: z.string().default(""),
-  linkedin: z.string().default(""),
-  website: z.string().default(""),
+  name: lenientString,
+  email: lenientString,
+  phone: lenientString,
+  location: lenientString,
+  linkedin: lenientString,
+  website: lenientString,
 });
 
 export const experienceEntrySchema = z.object({
-  company: z.string().default(""),
-  title: z.string().default(""),
-  location: z.string().default(""),
-  startDate: z.string().default(""), // "MMM YYYY"
-  endDate: z.string().default(""), // "MMM YYYY" | "Present"
-  bullets: z.array(z.string()).default([]),
+  company: lenientString,
+  title: lenientString,
+  location: lenientString,
+  startDate: lenientString, // "MMM YYYY"
+  endDate: lenientString, // "MMM YYYY" | "Present"
+  bullets: lenientStringArray,
 });
 
 export const educationEntrySchema = z.object({
-  school: z.string().default(""),
-  degree: z.string().default(""),
-  field: z.string().default(""),
-  startDate: z.string().default(""),
-  endDate: z.string().default(""),
-  details: z.string().default(""),
+  school: lenientString,
+  degree: lenientString,
+  field: lenientString,
+  startDate: lenientString,
+  endDate: lenientString,
+  details: lenientString,
 });
 
 export const projectEntrySchema = z.object({
-  name: z.string().default(""),
-  description: z.string().default(""),
-  link: z.string().default(""),
-  bullets: z.array(z.string()).default([]),
+  name: lenientString,
+  description: lenientString,
+  link: lenientString,
+  bullets: lenientStringArray,
 });
 
 export const resumeSectionsSchema = z.object({
   contact: contactSchema,
-  summary: z.string().default(""),
+  summary: lenientString,
   experience: z.array(experienceEntrySchema).default([]),
   education: z.array(educationEntrySchema).default([]),
-  skills: z.array(z.string()).default([]),
+  skills: lenientStringArray,
   projects: z.array(projectEntrySchema).default([]),
 });
 
@@ -99,7 +113,7 @@ export type CareerProfile = z.infer<typeof careerProfileSchema>;
 
 export const parsedResumeSchema = z.object({
   sections: resumeSectionsSchema,
-  target_roles: z.array(z.string()).default([]),
+  target_roles: lenientStringArray,
 });
 
 export type ParsedResume = z.infer<typeof parsedResumeSchema>;
@@ -110,11 +124,11 @@ export type ParsedResume = z.infer<typeof parsedResumeSchema>;
 // ---------------------------------------------------------------------------
 
 export const jdExtractionSchema = z.object({
-  required_skills: z.array(z.string()).default([]),
-  preferred_skills: z.array(z.string()).default([]),
-  title_variants: z.array(z.string()).default([]),
-  seniority_signals: z.array(z.string()).default([]),
-  domain_terms: z.array(z.string()).default([]),
+  required_skills: lenientStringArray,
+  preferred_skills: lenientStringArray,
+  title_variants: lenientStringArray,
+  seniority_signals: lenientStringArray,
+  domain_terms: lenientStringArray,
 });
 
 export type JdExtraction = z.infer<typeof jdExtractionSchema>;
@@ -123,12 +137,6 @@ export type JdExtraction = z.infer<typeof jdExtractionSchema>;
 // AI review (api/ai/review): on-demand Sonnet pass that powers the C2/C3 LLM
 // rubric and semantic JD-coverage. Layered into the score via scoreResume opts.
 // ---------------------------------------------------------------------------
-
-/** Tolerates models that emit `null` (not just omit) for empty string fields. */
-const lenientString = z
-  .string()
-  .nullish()
-  .transform((v) => v ?? "");
 
 export const reviewBulletSchema = z.object({
   role_index: z.coerce.number().int(),
