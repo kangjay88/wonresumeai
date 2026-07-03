@@ -17,6 +17,7 @@ import {
   type CoverLetterVersionItem,
 } from "./cover-letter-version-list";
 import { StatusSelect } from "./status-select";
+import { VersionDiff } from "./version-diff";
 import { VersionList, type VersionItem } from "./version-list";
 
 export default async function ApplicationPage({
@@ -147,6 +148,16 @@ export default async function ApplicationPage({
           <CoverLetterVersionList versions={coverLetters} />
         </div>
       </div>
+
+      {/* Version diff */}
+      {versions.length >= 2 ? (
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">
+            Compare resume versions
+          </h2>
+          <VersionDiff versions={versions} />
+        </div>
+      ) : null}
     </div>
   );
 }

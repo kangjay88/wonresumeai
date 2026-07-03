@@ -120,7 +120,11 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   strings instead of throwing (robustness debt noted during Phase 4).
 
 **Feature polish (from `docs/PLAN.md` §6 + analysis):**
-- [ ] Version diff view — side-by-side compare of two saved resume versions.
+- [x] Version diff view — side-by-side compare of two saved resume versions
+  (`version-diff.tsx`) on the application page: pick a base/compare version,
+  LCS line-diff (`lib/diff.ts`, no dependency) of summary, per-role experience
+  bullets, and skills, with add/remove/modified highlighting and an "only
+  changes" toggle.
 - [ ] Career-memory & voice management — edit profile/target roles + manage
   voice samples without re-uploading; surface what tailoring learned from
   `suggestion_edits`.
