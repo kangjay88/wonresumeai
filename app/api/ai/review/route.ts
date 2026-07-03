@@ -84,15 +84,29 @@ export async function POST(request: Request) {
     return block && block.type === "text" ? block.text : "";
   };
 
+  // Run the model, then cache the parsed rubric on the application so a page
+  // revisit re-applies it without paying for another Sonnet pass. Persisting
+  // is best-effort — a save failure never fails the request.
+  const runAndStore = async () => {
+    const result = parseModelJson(await call(), reviewResultSchema);
+    const { error: saveError } = await supabase
+      .from("applications")
+      .update({ review: result })
+      .eq("id", applicationId)
+      .eq("user_id", user.id);
+    if (saveError) console.error("review persist error:", saveError);
+    return NextResponse.json(result);
+  };
+
   try {
-    return NextResponse.json(parseModelJson(await call(), reviewResultSchema));
+    return await runAndStore();
   } catch (firstError) {
     const apiError = describeAnthropicError(firstError);
     if (apiError) {
       return NextResponse.json({ error: apiError.message }, { status: apiError.status });
     }
     try {
-      return NextResponse.json(parseModelJson(await call(), reviewResultSchema));
+      return await runAndStore();
     } catch (secondError) {
       const retryApiError = describeAnthropicError(secondError);
       if (retryApiError) {

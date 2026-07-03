@@ -11,12 +11,14 @@ export function ApplicationScore({
   applicationId,
   sections,
   jd,
+  initialRubric = null,
 }: {
   applicationId: string;
   sections: ResumeSections;
   jd: JdExtraction | null;
+  initialRubric?: ReviewResult | null;
 }) {
-  const [rubric, setRubric] = useState<ReviewResult | null>(null);
+  const [rubric, setRubric] = useState<ReviewResult | null>(initialRubric);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

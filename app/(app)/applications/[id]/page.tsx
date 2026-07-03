@@ -8,6 +8,7 @@ import {
   coverLetterContentSchema,
   jdExtractionSchema,
   resumeSectionsSchema,
+  reviewResultSchema,
 } from "@/lib/types";
 
 import { ApplicationWizard } from "./application-wizard";
@@ -30,7 +31,7 @@ export default async function ApplicationPage({
   const [{ data: app }, { data: resume }, { data: docs }] = await Promise.all([
     supabase
       .from("applications")
-      .select("id, company, role_title, job_description, jd_extraction, status, applied_at")
+      .select("id, company, role_title, job_description, jd_extraction, review, status, applied_at")
       .eq("id", id)
       .eq("user_id", user.id)
       .maybeSingle(),
@@ -56,6 +57,11 @@ export default async function ApplicationPage({
     : null;
   const sections = resume ? resumeSectionsSchema.safeParse(resume.sections) : null;
   const jdData = jd?.success ? jd.data : null;
+
+  // Cached AI rubric (if the review was run before) — re-applied without a
+  // fresh Sonnet call.
+  const review = app.review ? reviewResultSchema.safeParse(app.review) : null;
+  const rubric = review?.success ? review.data : null;
 
   const versions: VersionItem[] = (docs ?? [])
     .filter((d) => d.doc_type === "resume")
@@ -111,6 +117,7 @@ export default async function ApplicationPage({
           baseResumeId={resume?.id ?? null}
           sections={sections.data}
           jd={jdData}
+          initialRubric={rubric}
           jobDescription={app.job_description}
           resumeSaved={versions.length > 0}
           coverLetterSaved={coverLetters.length > 0}

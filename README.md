@@ -124,5 +124,8 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
 - [ ] Career-memory & voice management — edit profile/target roles + manage
   voice samples without re-uploading; surface what tailoring learned from
   `suggestion_edits`.
-- [ ] Persist the AI rubric review on the document score snapshot (avoid re-paying).
+- [x] Persist the AI rubric review — cached on `applications.review` (new
+  column, migration `0002`) when `api/ai/review` runs, and re-applied on page
+  load so revisiting doesn't re-pay for the same Sonnet pass. "Re-run AI
+  review" overwrites the cache.
 - [ ] Prompt tuning from real accept/reject data.

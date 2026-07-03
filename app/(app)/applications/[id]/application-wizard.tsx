@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 
 import { Button, Card } from "@/components/ui";
-import type { JdExtraction, ResumeSections } from "@/lib/types";
+import type { JdExtraction, ResumeSections, ReviewResult } from "@/lib/types";
 
 import { ApplicationScore } from "./application-score";
 import { CoverLetterPanel } from "./cover-letter-panel";
@@ -44,6 +44,7 @@ export function ApplicationWizard({
   baseResumeId,
   sections,
   jd,
+  initialRubric,
   jobDescription,
   resumeSaved,
   coverLetterSaved,
@@ -52,6 +53,7 @@ export function ApplicationWizard({
   baseResumeId: string | null;
   sections: ResumeSections;
   jd: JdExtraction | null;
+  initialRubric: ReviewResult | null;
   jobDescription: string;
   resumeSaved: boolean;
   coverLetterSaved: boolean;
@@ -109,6 +111,7 @@ export function ApplicationWizard({
               applicationId={applicationId}
               sections={sections}
               jd={jd}
+              initialRubric={initialRubric}
             />
             <div className="space-y-5">
               {jd ? (

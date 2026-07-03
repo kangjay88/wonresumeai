@@ -86,6 +86,7 @@ export interface Database {
           role_title: string;
           job_description: string;
           jd_extraction: Json | null;
+          review: Json | null;
           status: ApplicationStatus;
           applied_at: string | null;
           created_at: string;
@@ -97,6 +98,7 @@ export interface Database {
           role_title: string;
           job_description: string;
           jd_extraction?: Json | null;
+          review?: Json | null;
           status?: ApplicationStatus;
           applied_at?: string | null;
           created_at?: string;
@@ -108,6 +110,7 @@ export interface Database {
           role_title?: string;
           job_description?: string;
           jd_extraction?: Json | null;
+          review?: Json | null;
           status?: ApplicationStatus;
           applied_at?: string | null;
           created_at?: string;
