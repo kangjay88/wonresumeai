@@ -18,11 +18,13 @@ type Step = "upload" | "confirm";
 export function OnboardingFlow() {
   const [step, setStep] = useState<Step>("upload");
   const [draft, setDraft] = useState<ParsedResume | null>(null);
+  const [warnings, setWarnings] = useState<string[]>([]);
 
   if (step === "confirm" && draft) {
     return (
       <ConfirmStep
         draft={draft}
+        warnings={warnings}
         onChange={setDraft}
         onBack={() => setStep("upload")}
       />
@@ -31,8 +33,9 @@ export function OnboardingFlow() {
 
   return (
     <UploadStep
-      onParsed={(parsed) => {
+      onParsed={(parsed, parseWarnings) => {
         setDraft(parsed);
+        setWarnings(parseWarnings);
         setStep("confirm");
       }}
     />
@@ -43,7 +46,11 @@ export function OnboardingFlow() {
 // Step 1 — upload + parse
 // ---------------------------------------------------------------------------
 
-function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
+function UploadStep({
+  onParsed,
+}: {
+  onParsed: (p: ParsedResume, warnings: string[]) => void;
+}) {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +71,10 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
         setError(data.error ?? "Something went wrong parsing the resume.");
         return;
       }
-      onParsed(data as ParsedResume);
+      onParsed(
+        data as ParsedResume,
+        Array.isArray(data.warnings) ? (data.warnings as string[]) : [],
+      );
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -109,10 +119,12 @@ function UploadStep({ onParsed }: { onParsed: (p: ParsedResume) => void }) {
 
 function ConfirmStep({
   draft,
+  warnings,
   onChange,
   onBack,
 }: {
   draft: ParsedResume;
+  warnings: string[];
   onChange: (p: ParsedResume) => void;
   onBack: () => void;
 }) {
@@ -143,6 +155,17 @@ function ConfirmStep({
 
   return (
     <div className="space-y-8">
+      {warnings.length ? (
+        <div className="space-y-1 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">
+          <p className="font-medium">Heads up — this PDF may not have parsed cleanly:</p>
+          <ul className="list-disc space-y-1 pl-5">
+            {warnings.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       <p className="text-sm text-muted">
         Here&apos;s your career memory, assembled. Fix anything the parser got
         wrong, then save.

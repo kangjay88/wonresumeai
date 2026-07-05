@@ -112,8 +112,11 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   in-panel skeletons during AI generation, and a fade-in on step changes.
 
 **Scoring / quality (competitive gaps):**
-- [ ] Imported-PDF parse validation (multi-column / scanned detection) so
-  uploaded resumes score honestly, not assumed-clean.
+- [x] Imported-PDF parse validation (`lib/pdf/validate.ts`): on upload, flags
+  likely-scanned PDFs (low text-per-page) and multi-column layouts (empty
+  central gutter with text on both sides) as warnings surfaced on the
+  onboarding confirm step, so the user reviews before saving. Warnings, not
+  hard blocks — the single-column-with-dates false-positive case is guarded.
 - [x] Apply the null-tolerant `lenientString` schema pattern to the
   `parse-resume` and `extract-jd` schemas — plus a `lenientStringArray`
   companion so a `null` array (or `null`/blank items) degrades to `[]`/clean

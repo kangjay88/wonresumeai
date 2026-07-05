@@ -8,6 +8,7 @@ import {
   buildParseResumeUserPrompt,
 } from "@/lib/ai/prompts/parse-resume";
 import { blockCrossSite } from "@/lib/http";
+import { validatePdfExtraction } from "@/lib/pdf/validate";
 import { getOptionalUser } from "@/lib/supabase/auth";
 import { parsedResumeSchema } from "@/lib/types";
 
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
 
   // --- Extract text from the PDF -------------------------------------------
   let text: string;
+  let warnings: string[] = [];
   try {
     const buffer = new Uint8Array(await file.arrayBuffer());
     const pdf = await getDocumentProxy(buffer);
@@ -65,6 +67,8 @@ export async function POST(request: Request) {
       ? extracted.text.join("\n")
       : extracted.text
     ).trim();
+    // Flag likely-bad extractions (scanned / multi-column) for user review.
+    warnings = (await validatePdfExtraction(pdf, text)).warnings;
   } catch {
     return NextResponse.json(
       { error: "Could not read this PDF. Is it a valid, text-based PDF?" },
@@ -106,7 +110,7 @@ export async function POST(request: Request) {
 
   try {
     const parsed = parseModelJson(await callHaiku(), parsedResumeSchema);
-    return NextResponse.json(parsed);
+    return NextResponse.json({ ...parsed, warnings });
   } catch (firstError) {
     // Hard API errors (billing, auth, rate limit) won't fix on retry — surface
     // them. Only JSON/validation failures are worth a second attempt.
