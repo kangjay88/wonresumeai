@@ -128,9 +128,13 @@ analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
   LCS line-diff (`lib/diff.ts`, no dependency) of summary, per-role experience
   bullets, and skills, with add/remove/modified highlighting and an "only
   changes" toggle.
-- [ ] Career-memory & voice management — edit profile/target roles + manage
-  voice samples without re-uploading; surface what tailoring learned from
-  `suggestion_edits`.
+- [x] Career-memory & voice management — `/onboarding` is now a hub:
+  first-timers get the upload flow, returning users get a manager
+  (`career-memory-manager.tsx`) to edit résumé sections + target roles without
+  re-uploading (`updateCareerMemory`, re-derives the profile, preserves voice),
+  manage voice samples (add/edit/remove/re-harvest via `updateVoiceSamples`,
+  shared `lib/voice.ts`), and see what tailoring learned from recent
+  `suggestion_edits`. "Replace from a new PDF" still available for a full reset.
 - [x] Persist the AI rubric review — cached on `applications.review` (new
   column, migration `0002`) when `api/ai/review` runs, and re-applied on page
   load so revisiting doesn't re-pay for the same Sonnet pass. "Re-run AI
