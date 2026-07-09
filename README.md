@@ -1,4 +1,4 @@
-# Resume Tailor
+# WonResume Ai
 
 Personal AI resume tailoring app. Paste a job description → get an ATS-scored,
 voice-preserving tailored resume + cover letter with editable per-bullet
@@ -88,7 +88,11 @@ Building in phases per `docs/PLAN.md`; each phase ends deployable.
 Deployed and in real use; these are pulled from real usage + the competitive
 analysis (vs. Jobscan / Resume Worded / Teal / Rezi).
 
-**UX redesign (next focus — draw from competitor patterns via Mobbin):**
+**UX redesign (draw from competitor patterns via Mobbin):**
+- [x] **Public marketing home** — `/` is a public landing page (hero with a
+  faux score panel, features grid, how-it-works, three pricing tiers, final CTA,
+  footer) in the coral/slate theme; login lives at `/login`. The proxy makes
+  `/` public and redirects signed-in users straight to the dashboard.
 - [x] **Design system / color palette** — intentional slate + coral palette
   (`#2D3142 #4F5D75 #BFC0C0 #FFFFFF #EF8354`) driven entirely from the
   `@theme` token block in `app/globals.css`; reusable UI primitives in

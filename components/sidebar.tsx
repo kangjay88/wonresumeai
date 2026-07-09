@@ -84,7 +84,7 @@ export function Sidebar({
     <aside className="hidden w-60 shrink-0 flex-col border-r border-line bg-card md:sticky md:top-0 md:flex md:h-screen">
       <div className="px-5 py-5">
         <Link href="/dashboard" className="text-lg font-semibold text-brand-300">
-          Resume Tailor
+          WonResume Ai
         </Link>
       </div>
 

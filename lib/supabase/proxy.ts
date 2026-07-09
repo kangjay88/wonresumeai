@@ -3,8 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import type { Database } from "./types";
 
-/** Paths reachable without an authenticated session. */
-const PUBLIC_PATHS = ["/login", "/auth"];
+/** Paths reachable without an authenticated session. "/" is the marketing
+ *  home; matched exactly (the startsWith check below uses `${p}/` = "//", which
+ *  never matches a normal path, so this doesn't open the whole app). */
+const PUBLIC_PATHS = ["/", "/login", "/auth"];
 
 /**
  * Refreshes the Supabase auth session on every request and gates the app:
@@ -54,7 +56,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && pathname === "/login") {
+  // Signed-in users skip the marketing home and login — straight to the app.
+  if (user && (pathname === "/login" || pathname === "/")) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);

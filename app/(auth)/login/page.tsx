@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
 import { Button, Input } from "@/components/ui";
@@ -16,9 +17,13 @@ export default function LoginPage() {
 
   return (
     <main className="flex flex-1 items-center justify-center p-6">
-      <div className="w-full max-w-sm space-y-6">
+      <div className="reveal w-full max-w-sm space-y-6">
         <div className="space-y-1 text-center">
-          <h1 className="text-2xl font-semibold">Resume Tailor</h1>
+          <h1 className="text-2xl font-semibold">
+            <Link href="/" className="hover:text-brand-400">
+              WonResume Ai
+            </Link>
+          </h1>
           <p className="text-sm text-muted">Sign in to your account.</p>
         </div>
 

@@ -70,6 +70,47 @@ body {
   animation: fade-in 0.25s ease-out both;
 }
 
+/* Entrance reveal — a subtle rise + fade on load, tuned for a calm, business
+ * feel. Stagger sequential elements with .reveal-2 … .reveal-6. `both` keeps
+ * the element hidden until its delay elapses; browsers without animation
+ * support simply show the final state. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.reveal-2 {
+  animation-delay: 0.07s;
+}
+.reveal-3 {
+  animation-delay: 0.14s;
+}
+.reveal-4 {
+  animation-delay: 0.21s;
+}
+.reveal-5 {
+  animation-delay: 0.28s;
+}
+.reveal-6 {
+  animation-delay: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .reveal {
+    animation: none;
+  }
+}
+
 /* Thin, theme-matched scrollbar for horizontal scroll regions (e.g. the
  * kanban board). Keeps the scroll affordance but drops Chrome's chunky
  * default bar. Swap in `.scrollbar-none` styles to hide it entirely. */

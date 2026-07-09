@@ -1,4 +1,4 @@
-# Resume Tailor — Project Plan
+# WonResume Ai — Project Plan
 
 Personal AI resume tailoring app. Paste a job description → get an ATS-scored, voice-preserving tailored resume + cover letter with editable per-bullet suggestions → every iteration stored per application so any version can be retrieved when an offer or interview comes in.
 

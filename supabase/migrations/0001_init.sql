@@ -1,4 +1,4 @@
--- Resume Tailor — initial schema
+-- WonResume Ai — initial schema
 -- Single-user app: every table is owned by auth.users and gated by RLS so a
 -- row is only visible to the user that created it (auth.uid() = user_id).
 

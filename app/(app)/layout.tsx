@@ -28,7 +28,7 @@ export default async function AppLayout({
         {/* Mobile top bar (sidebar is hidden below md) */}
         <header className="flex items-center justify-between border-b border-line bg-card px-4 py-3 md:hidden">
           <Link href="/dashboard" className="font-semibold text-brand-300">
-            Resume Tailor
+            WonResume Ai
           </Link>
           <form action={signOut}>
             <button type="submit" className="text-sm text-muted">

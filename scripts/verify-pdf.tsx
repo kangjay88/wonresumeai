@@ -51,7 +51,7 @@ const sample = resumeSectionsSchema.parse({
   skills: ["TypeScript", "React", "Node.js", "PostgreSQL", "AWS"],
   projects: [
     {
-      name: "Resume Tailor",
+      name: "WonResume Ai",
       description: "Personal AI resume tailoring app.",
       link: "github.com/jaykang/resume-tailor",
       bullets: ["Next.js + Supabase + Anthropic API."],
